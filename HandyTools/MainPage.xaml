@@ -1,0 +1,49 @@
+﻿<Page
+    x:Class="HandyTools.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Hub Header="Handy Tools" >
+            <Hub.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding}" FontSize="72"></TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemContentTextBlockStyle}">您的生活小助手!</TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Hub.HeaderTemplate>
+            <HubSection Header="电话号码查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
+                <DataTemplate>
+                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:ShoujiListPage"></Frame>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Header="地区查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
+                <DataTemplate>
+                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:ShenfenListPage"></Frame>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Header="其它查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
+                <DataTemplate>
+                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:OtherPage"></Frame>
+                </DataTemplate>
+            </HubSection>
+        </Hub>
+       
+    </Grid>
+</Page>

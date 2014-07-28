@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="HandyTools.ShoujiListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+
+        <ListView Name="ShowjiListView" SelectionChanged="ShowjiListView_OnSelectionChanged">
+            <ListViewItem>
+                <StackPanel Style="{StaticResource ListViewStyle}">
+                    <TextBlock FontSize="36">归属地查询</TextBlock>
+                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">查询手机号的归属地信息</TextBlock>
+                </StackPanel>
+            </ListViewItem>
+            <ListViewItem>
+                <StackPanel Style="{StaticResource ListViewStyle}">
+                    <TextBlock FontSize="36">吉凶测试</TextBlock>
+                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">查询手机号的吉凶信息</TextBlock>
+                </StackPanel>
+            </ListViewItem>
+            <ListViewItem>
+                <StackPanel Style="{StaticResource ListViewStyle}">
+                    <TextBlock FontSize="36">常用电话号码</TextBlock>
+                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">全国公众服务电话号码查询</TextBlock>
+                </StackPanel>
+            </ListViewItem>
+        </ListView>
+    </Grid>
+</Page>
