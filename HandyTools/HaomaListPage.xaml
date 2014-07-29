@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="HandyTools.ShoujiListPage"
+    x:Class="HandyTools.HaomaListPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HandyTools"
@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    
     <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -16,7 +16,8 @@
         </Grid.ChildrenTransitions>
 
 
-        <ListView Name="ShowjiListView" SelectionChanged="ShowjiListView_OnSelectionChanged">
+        <ListView Name="HaomaListView" 
+                  SelectionChanged="HaomaListView_OnSelectionChanged">
             <ListViewItem>
                 <StackPanel Style="{StaticResource ListViewStyle}">
                     <TextBlock FontSize="36">归属地查询</TextBlock>

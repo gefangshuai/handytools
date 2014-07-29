@@ -19,7 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Hub Header="Handy Tools" >
+        <Hub Header="Handy Tools">
             <Hub.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -30,7 +30,7 @@
             </Hub.HeaderTemplate>
             <HubSection Header="电话号码查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
                 <DataTemplate>
-                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:ShoujiListPage"></Frame>
+                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:HaomaListPage"></Frame>
                 </DataTemplate>
             </HubSection>
             <HubSection Header="地区查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">

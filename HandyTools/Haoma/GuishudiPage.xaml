@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="HandyTools.Haoma.GuishudiPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools.Haoma"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="GuishudiPage_OnLoaded">
+    <Page.Resources>
+        <x:String x:Key="TitleString">号码归属地查询</x:String>
+    </Page.Resources>
+    <!--<Page.Transitions>
+        <TransitionCollection>
+            <ContentThemeTransition VerticalOffset="500"></ContentThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>-->
+    <Grid x:Name="LayoutRoot">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="15,0,15,15">
+            <TextBlock Text="{StaticResource TitleString}" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBox TextChanged="CodeTextBox_OnTextChanged"  Margin="0,10 0 0" InputScope="Number" PlaceholderText="输入电话号码" Name="CodeTextBox" Background="{StaticResource ApplicationPageBackgroundThemeBrush}"></TextBox>
+        </StackPanel>
+    </Grid>
+</Page>

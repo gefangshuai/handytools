@@ -26,7 +26,7 @@ namespace HandyTools
     public sealed partial class App : Application
     {
         private TransitionCollection transitions;
-
+        public static Page MainPage;
         /// <summary>
         /// 初始化单一实例应用程序对象。    这是执行的创作代码的第一行，
         /// 逻辑上等同于 main() 或 WinMain()。

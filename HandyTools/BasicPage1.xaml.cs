@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using HandyTools.Common;
+﻿using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,27 +17,24 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Haoma;
 
 namespace HandyTools
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class BasicPage1 : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public MainPage()
+        public BasicPage1()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            App.MainPage = this;
         }
 
         /// <summary>
@@ -111,6 +107,5 @@ namespace HandyTools
         }
 
         #endregion
-
     }
 }
