@@ -17,9 +17,7 @@ namespace HandyTools.Common
             var response = await GetHttpClient().GetByteArrayAsync(new Uri(string.Format(url, par)));
            
             Gb2312Encoding encoding = new Gb2312Encoding();
-            return encoding.GetString(response, 0, response.Length);
+            return encoding.GetString(response, 0, response.Length).ToLower();
         }
-
-    
     }
 }

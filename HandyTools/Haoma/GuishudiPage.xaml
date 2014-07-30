@@ -10,12 +10,20 @@
     Loaded="GuishudiPage_OnLoaded">
     <Page.Resources>
         <x:String x:Key="TitleString">号码归属地查询</x:String>
+        
+        <Style TargetType="TextBlock" x:Key="TitleStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0 8" />
+            <Setter Property="Foreground" Value="SeaGreen"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ResultStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0 8" />
+        </Style>
+
     </Page.Resources>
-    <!--<Page.Transitions>
-        <TransitionCollection>
-            <ContentThemeTransition VerticalOffset="500"></ContentThemeTransition>
-        </TransitionCollection>
-    </Page.Transitions>-->
+   
     <Grid x:Name="LayoutRoot">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -27,9 +35,61 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <!-- 标题面板 -->
-        <StackPanel Grid.Row="0" Margin="15,0,15,15">
-            <TextBlock Text="{StaticResource TitleString}" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBox TextChanged="CodeTextBox_OnTextChanged"  Margin="0,10 0 0" InputScope="Number" PlaceholderText="输入电话号码" Name="CodeTextBox" Background="{StaticResource ApplicationPageBackgroundThemeBrush}"></TextBox>
+        <StackPanel Grid.Row="0" Margin="15,0">
+            <AutoSuggestBox TextChanged="AutoSuggestBox_OnTextChanged" Name="AutoSuggestBox" PlaceholderText="输入号码进行查询" Header="号码归属地查询"/>
+            <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
+                输入满11位程序会自动查询
+            </TextBlock>
         </StackPanel>
+        <Grid Grid.Row="1" Margin="15" Name="ResultGrid">
+            <TextBlock Name="NonoTextBlock" Visibility="Collapsed" Style="{StaticResource ListViewItemTextBlockStyle}" HorizontalAlignment="Center">无结果！</TextBlock>
+            <ListView Name="ResultListView" Visibility="Collapsed">
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">归属地:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Attribution}"/>
+                    </Grid>
+                </ListViewItem>
+
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">类型:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Type}"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">区号:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Code}"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">邮编:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding ZipCode}"/>
+                    </Grid>
+                </ListViewItem>
+            </ListView>
+            <StackPanel VerticalAlignment="Center" Visibility="Collapsed" Name="ProgressStackPanel">
+                <ProgressRing Name="ProgressRing" Width="70" Height="70" IsActive="True"></ProgressRing>
+                <TextBlock HorizontalAlignment="Center">正在查询</TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

@@ -35,6 +35,8 @@ namespace HandyTools.Haoma
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         SpeechRecognizer _recognizer;
         IAsyncOperation<SpeechRecognitionResult> _recoOperation;
+
+
         public GuishudiPage()
         {
             this.InitializeComponent();
@@ -110,6 +112,12 @@ namespace HandyTools.Haoma
             {
                 _recognizer = new SpeechRecognizer();
             }
+
+            List<string> strList = new List<string>()
+            {
+                "aaa","bbb","ccc"
+            };
+            AutoSuggestBox.ItemsSource = strList;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -121,14 +129,45 @@ namespace HandyTools.Haoma
 
         private void GuishudiPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            CodeTextBox.Focus(FocusState.Programmatic);
+            AutoSuggestBox.Focus(FocusState.Programmatic);
         }
 
-        private async void CodeTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+
+        private async void AutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            string code = CodeTextBox.Text;
-            string str = await HttpClientHelper.Get("http://www.ip138.com:8080/search.asp?action=mobile&mobile=15811504881");
-            Debug.WriteLine(str);
+            if (sender.Text.Length == 11)
+            {
+                try
+                {
+                    SearchCode(sender.Text);
+                }
+                catch (Exception e)
+                {
+                    MessageDialog messageDialog = new MessageDialog(e.Message);
+                    messageDialog.ShowAsync();
+                }
+            }
+        }
+
+        private async void SearchCode(string text)
+        {
+            ProgressStackPanel.Visibility = Visibility.Visible;
+            string html = await HttpClientHelper.Get(API.HaomaUrl, text);
+            Guishudi guishudi = HtmlHelper.ParseGuishudiResult(html);
+
+            if (guishudi == null)
+            {
+                NonoTextBlock.Visibility = Visibility.Visible;
+                ResultListView.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ResultGrid.DataContext = guishudi;
+                ResultListView.Header = string.Format("查询结果({0}):", text);
+                NonoTextBlock.Visibility = Visibility.Collapsed;
+                ResultListView.Visibility = Visibility.Visible;
+            }
+            ProgressStackPanel.Visibility = Visibility.Collapsed;
         }
     }
 }
