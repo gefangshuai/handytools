@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Windows.UI;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,10 @@ namespace HandyTools
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            
+            StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
             App.MainPage = this;
         }
 

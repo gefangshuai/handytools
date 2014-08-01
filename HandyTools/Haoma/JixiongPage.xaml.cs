@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using HandyTools.Common;
+﻿using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,19 +17,18 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Haoma;
 
-namespace HandyTools
+namespace HandyTools.Haoma
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class HaomaListPage : Page
+    public sealed partial class JixiongPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public HaomaListPage()
+        public JixiongPage()
         {
             this.InitializeComponent();
 
@@ -102,6 +100,12 @@ namespace HandyTools
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            var code = e.Parameter as string;
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                AutoSuggestBox.Text = code;
+                SearchJiXiong();
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -111,18 +115,37 @@ namespace HandyTools
 
         #endregion
 
-
-        private void HaomaListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (HaomaListView.SelectedIndex)
+            SearchJiXiong();
+        }
+
+        private async void SearchJiXiong()
+        {
+            string text = AutoSuggestBox.Text;
+            ProgressStackPanel.Visibility = Visibility.Visible;
+            string html = await HttpClientHelper.Get(API.JiXiong, text);
+            JiXiong jiXiong = HtmlHelper.ParseJiXiongResult(html);
+
+            if (jiXiong == null)
             {
-                case 0:
-                    App.MainPage.Frame.Navigate(typeof(GuishudiPage));
-                    break;
-                case 1:
-                    App.MainPage.Frame.Navigate(typeof (JixiongPage));
-                    break;
+                NonoTextBlock.Visibility = Visibility.Visible;
+                ResultListView.Visibility = Visibility.Collapsed;
             }
+            else
+            {
+                ContentRoot.DataContext = jiXiong;
+                ResultListView.Header = string.Format("查询结果({0}):", text);
+                NonoTextBlock.Visibility = Visibility.Collapsed;
+                ResultListView.Visibility = Visibility.Visible;
+            }
+            ProgressStackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void JixiongPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(AutoSuggestBox.Text))
+                AutoSuggestBox.Focus(FocusState.Programmatic);
         }
     }
 }

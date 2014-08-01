@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Windows.UI.Popups;
 
 namespace HandyTools.Common
 {
@@ -14,10 +15,19 @@ namespace HandyTools.Common
 
         public async static Task<string> Get(String url, params object[] par)
         {
-            var response = await GetHttpClient().GetByteArrayAsync(new Uri(string.Format(url, par)));
+            try
+            {
+                var response = await GetHttpClient().GetByteArrayAsync(new Uri(string.Format(url, par)));
            
-            Gb2312Encoding encoding = new Gb2312Encoding();
-            return encoding.GetString(response, 0, response.Length).ToLower();
+                Gb2312Encoding encoding = new Gb2312Encoding();
+                return encoding.GetString(response, 0, response.Length).ToLower();
+            }
+            catch (Exception e)
+            {
+                MessageDialog dialog = new MessageDialog(e.Message);
+                dialog.ShowAsync();
+            }
+            return "";
         }
     }
 }

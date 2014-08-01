@@ -20,25 +20,63 @@ namespace HandyTools.Common
         public static Guishudi ParseGuishudiResult(string html)
         {
             HtmlDocument document = LoadHtml(html);
-            var tableHtml = document.DocumentNode.Descendants("table").LastOrDefault().InnerHtml;
-            if (tableHtml.Contains("ip138.com查询结果"))
+            if (html.Contains("table"))
             {
-                Guishudi guishudi = new Guishudi();
-                document = LoadHtml(tableHtml);
-                foreach (var htmlNode in document.DocumentNode.Descendants("tr"))
+                var tableHtml = document.DocumentNode.Descendants("table").LastOrDefault().InnerHtml;
+                if (tableHtml != null && tableHtml.Contains("ip138.com查询结果"))
                 {
-                    string text = HtmlUtilities.ConvertToText(htmlNode.InnerText);
-                    if (text.Contains("卡号归属地"))
-                        guishudi.Attribution = text.Replace("卡号归属地", "");
-                    if (text.Contains("卡 类 型"))
-                        guishudi.Type = text.Replace("卡 类 型", "");
-                    if (text.Contains("区 号"))
-                        guishudi.Code = text.Replace("区 号", "");
-                    if (text.Contains("邮 编"))
-                        guishudi.ZipCode = text.Replace("邮 编", "").Replace("更详细的..", "");
+                    Guishudi guishudi = new Guishudi();
+                    document = LoadHtml(tableHtml);
+                    foreach (var htmlNode in document.DocumentNode.Descendants("tr"))
+                    {
+                        string text = HtmlUtilities.ConvertToText(htmlNode.InnerText);
+                        if (text.Contains("卡号归属地"))
+                            guishudi.Attribution = text.Replace("卡号归属地", "").Trim();
+                        if (text.Contains("卡 类 型"))
+                            guishudi.Type = text.Replace("卡 类 型", "").Trim();
+                        if (text.Contains("区 号"))
+                            guishudi.Code = text.Replace("区 号", "").Trim();
+                        if (text.Contains("邮 编"))
+                            guishudi.ZipCode = text.Replace("邮 编", "").Replace("更详细的..", "").Trim();
+                    }
+                    return guishudi;
                 }
+            }
+            return null;
+        }
 
-                return guishudi;
+        internal static JiXiong ParseJiXiongResult(string html)
+        {
+            HtmlDocument document = LoadHtml(html);
+            var table = document.DocumentNode.Descendants("table").FirstOrDefault(n => n.Attributes.Contains("class") &&
+                                                                                           n.Attributes["class"].Value.Contains("t4"));
+            if (table != null)
+            {
+                var tableHtml = table.InnerHtml;
+                JiXiong jiXiong = new JiXiong();
+                if (tableHtml != null && tableHtml.Contains("吉凶推理"))
+                {
+                    document = LoadHtml(tableHtml);
+                    foreach (var htmlNode in document.DocumentNode.Descendants("tr"))
+                    {
+                        string text = HtmlUtilities.ConvertToText(htmlNode.InnerText);
+                        if (text.Contains("吉凶推理："))
+                            jiXiong.Tuili = text.Replace("吉凶推理：", "").Trim();
+                        if (text.Contains("暗示的信息："))
+                            jiXiong.AnShi = text.Replace("暗示的信息：", "").Trim();
+                        if (text.Contains("诗云："))
+                            jiXiong.ShiYun = text.Replace("诗云：", "").Trim();
+                        if (text.Contains("个性系数："))
+                            jiXiong.GeXingXiShu = text.Replace("个性系数：", "").Replace("性格类型：", "").Substring(0, 2).Trim();
+                        if (text.Contains("性格类型："))
+                            jiXiong.XingGeLeiXing = text.Replace("个性系数：", "").Replace("性格类型：", "").Substring(2).Trim();
+                        if (text.Contains("具体表现："))
+                            jiXiong.JuTiBiaoXian = text.Replace("具体表现：", "").Trim();
+                        if (text.Contains("谚语："))
+                            jiXiong.YanYu = text.Replace("谚语：", "").Trim();
+                    }
+                    return jiXiong;
+                }
             }
             return null;
         }

@@ -19,22 +19,43 @@
         <ListView Name="HaomaListView" 
                   SelectionChanged="HaomaListView_OnSelectionChanged">
             <ListViewItem>
-                <StackPanel Style="{StaticResource ListViewStyle}">
-                    <TextBlock FontSize="36">归属地查询</TextBlock>
-                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">查询手机号的归属地信息</TextBlock>
-                </StackPanel>
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="Assets/imgs/mobile.png" Height="52" />
+                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
+                        <TextBlock FontSize="36">归属地查询</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">仅支持11位手机号码查询</TextBlock>
+                    </StackPanel>
+                </Grid>
             </ListViewItem>
             <ListViewItem>
-                <StackPanel Style="{StaticResource ListViewStyle}">
-                    <TextBlock FontSize="36">吉凶测试</TextBlock>
-                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">查询手机号的吉凶信息</TextBlock>
-                </StackPanel>
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="Assets/imgs/jixiong.png" Height="52" />
+                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
+                        <TextBlock FontSize="36">运程推理</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">支持手机号、车牌号和QQ号查询</TextBlock>
+                    </StackPanel>
+                </Grid>
             </ListViewItem>
             <ListViewItem>
-                <StackPanel Style="{StaticResource ListViewStyle}">
-                    <TextBlock FontSize="36">常用电话号码</TextBlock>
-                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">全国公众服务电话号码查询</TextBlock>
-                </StackPanel>
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="Assets/imgs/phone.png" Height="42" />
+                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
+                        <TextBlock FontSize="36">常用电话号码</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">全国公众服务电话号码查询</TextBlock>
+                    </StackPanel>
+                </Grid>
             </ListViewItem>
         </ListView>
     </Grid>

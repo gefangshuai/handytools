@@ -13,5 +13,16 @@
         <Style x:Key="ListViewStyle" TargetType="StackPanel">
             <Setter Property="Margin" Value="0 10"></Setter>
         </Style>
+
+        <Style TargetType="TextBlock" x:Key="TitleStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0 8" />
+            <Setter Property="Foreground" Value="SeaGreen"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ResultStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="0 8" />
+        </Style>
     </Application.Resources>
 </Application>

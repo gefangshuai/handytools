@@ -2,7 +2,6 @@
     x:Class="HandyTools.Haoma.GuishudiPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:HandyTools.Haoma"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,17 +10,6 @@
     <Page.Resources>
         <x:String x:Key="TitleString">号码归属地查询</x:String>
         
-        <Style TargetType="TextBlock" x:Key="TitleStyle">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Margin" Value="0 8" />
-            <Setter Property="Foreground" Value="SeaGreen"/>
-        </Style>
-
-        <Style TargetType="TextBlock" x:Key="ResultStyle">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Margin" Value="0 8" />
-        </Style>
-
     </Page.Resources>
    
     <Grid x:Name="LayoutRoot">
@@ -36,9 +24,9 @@
         </Grid.RowDefinitions>
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15,0">
-            <AutoSuggestBox TextChanged="AutoSuggestBox_OnTextChanged" Name="AutoSuggestBox" PlaceholderText="输入号码进行查询" Header="号码归属地查询"/>
+            <AutoSuggestBox Name="AutoSuggestBox" Header="{StaticResource TitleString}"/>
             <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
-                输入满11位程序会自动查询
+                提示: 请输入11位手机号码
             </TextBlock>
         </StackPanel>
         <Grid Grid.Row="1" Margin="15" Name="ResultGrid">
@@ -85,11 +73,21 @@
                         <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding ZipCode}"/>
                     </Grid>
                 </ListViewItem>
+                <ListView.Footer>
+                    <StackPanel>
+                        <Button HorizontalAlignment="Stretch" Name="JixiongButton" Click="JixiongButton_OnClick">运程推理</Button>
+                    </StackPanel>
+                </ListView.Footer>
             </ListView>
-            <StackPanel VerticalAlignment="Center" Visibility="Collapsed" Name="ProgressStackPanel">
+            <StackPanel Margin="0 100 0 0" Visibility="Collapsed" Name="ProgressStackPanel">
                 <ProgressRing Name="ProgressRing" Width="70" Height="70" IsActive="True"></ProgressRing>
                 <TextBlock HorizontalAlignment="Center">正在查询</TextBlock>
             </StackPanel>
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Find" Name="SearchAppBarButton" Label="查询" Click="SearchAppBarButton_OnClick"></AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

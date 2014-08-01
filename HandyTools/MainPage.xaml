@@ -22,8 +22,8 @@
         <Hub Header="Handy Tools">
             <Hub.HeaderTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding}" FontSize="72"></TextBlock>
+                    <StackPanel Margin="0 10 0 0">
+                        <TextBlock Text="{Binding}" FontSize="62"></TextBlock>
                         <TextBlock Style="{StaticResource ListViewItemContentTextBlockStyle}">您的生活小助手!</TextBlock>
                     </StackPanel>
                 </DataTemplate>

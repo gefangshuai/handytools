@@ -42,6 +42,7 @@ namespace HandyTools.Haoma
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -133,24 +134,14 @@ namespace HandyTools.Haoma
         }
 
 
-        private async void AutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (sender.Text.Length == 11)
-            {
-                try
-                {
-                    SearchCode(sender.Text);
-                }
-                catch (Exception e)
-                {
-                    MessageDialog messageDialog = new MessageDialog(e.Message);
-                    messageDialog.ShowAsync();
-                }
-            }
-        }
-
         private async void SearchCode(string text)
         {
+            if(text.Length != 11)
+            {
+                MessageDialog dialog = new MessageDialog("请输入11位手机号！", "提示");
+                dialog.ShowAsync();
+                return;
+            }
             ProgressStackPanel.Visibility = Visibility.Visible;
             string html = await HttpClientHelper.Get(API.HaomaUrl, text);
             Guishudi guishudi = HtmlHelper.ParseGuishudiResult(html);
@@ -168,6 +159,24 @@ namespace HandyTools.Haoma
                 ResultListView.Visibility = Visibility.Visible;
             }
             ProgressStackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SearchCode(AutoSuggestBox.Text);
+            }
+            catch (Exception exp)
+            {
+                MessageDialog messageDialog = new MessageDialog(exp.Message);
+                messageDialog.ShowAsync();
+            }
+        }
+
+        private void JixiongButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (JixiongPage), AutoSuggestBox.Text);
         }
     }
 }

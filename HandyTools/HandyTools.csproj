@@ -88,6 +88,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Haoma\JixiongPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +129,10 @@
     <Compile Include="Haoma\GuishudiPage.xaml.cs">
       <DependentUpon>GuishudiPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Haoma\JiXiong.cs" />
+    <Compile Include="Haoma\JixiongPage.xaml.cs">
+      <DependentUpon>JixiongPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -146,6 +154,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\1348306808109.jpg" />
+    <Content Include="Assets\imgs\handy.png" />
+    <Content Include="Assets\imgs\jixiong.png" />
+    <Content Include="Assets\imgs\mobile.png" />
+    <Content Include="Assets\imgs\phone.png" />
+    <Content Include="Assets\imgs\search.png" />
     <Content Include="Assets\imgs\voice.gif" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
