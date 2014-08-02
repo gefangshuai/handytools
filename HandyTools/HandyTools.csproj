@@ -84,6 +84,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Haoma\ChangYongPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Haoma\GuishudiPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +121,7 @@
       <DependentUpon>BasicPage1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\API.cs" />
+    <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Common\Gb2312Encoding.cs" />
     <Compile Include="Common\Gb2312toUnicodeDictinary.cs" />
     <Compile Include="Common\HtmlHelper.cs" />
@@ -125,6 +130,11 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Haoma\Changyong.cs" />
+    <Compile Include="Haoma\ChangyongCategory.cs" />
+    <Compile Include="Haoma\ChangYongPage.xaml.cs">
+      <DependentUpon>ChangYongPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Haoma\Guishudi.cs" />
     <Compile Include="Haoma\GuishudiPage.xaml.cs">
       <DependentUpon>GuishudiPage.xaml</DependentUpon>
@@ -133,6 +143,7 @@
     <Compile Include="Haoma\JixiongPage.xaml.cs">
       <DependentUpon>JixiongPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Haoma\ListGroupStyleSelector.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

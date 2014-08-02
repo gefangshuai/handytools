@@ -13,7 +13,7 @@ namespace HandyTools.Common
             return _httpClient ?? (_httpClient = new HttpClient());
         }
 
-        public async static Task<string> Get(String url, params object[] par)
+        public async static Task<string> GetWithGbk(String url, params object[] par)
         {
             try
             {
@@ -29,5 +29,20 @@ namespace HandyTools.Common
             }
             return "";
         }
+
+        public async static Task<string> GetWithUtf8(string url, params object[] par)
+        {
+            try
+            {
+                return await GetHttpClient().GetStringAsync(url);
+            }
+            catch (Exception e)
+            {
+
+                MessageDialog dialog = new MessageDialog(e.Message);
+                dialog.ShowAsync();
+            }
+            return null;
+        } 
     }
 }

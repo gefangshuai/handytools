@@ -122,7 +122,11 @@ namespace HandyTools
                 case 1:
                     App.MainPage.Frame.Navigate(typeof (JixiongPage));
                     break;
+                case  2:
+                    App.MainPage.Frame.Navigate(typeof (ChangYongPage));
+                    break;
             }
+            HaomaListView.SelectedItem = null;
         }
     }
 }

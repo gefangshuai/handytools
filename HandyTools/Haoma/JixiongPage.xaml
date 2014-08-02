@@ -41,7 +41,7 @@
                 <ListViewItem Style="{StaticResource ListViewItemStyle}">
                     <StackPanel>
                         <TextBlock  Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">运程推理:</TextBlock>
-                        <TextBlock  TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Tuili}"/>
+                        <TextBlock FontWeight="Bold" Foreground="Red" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Tuili}"/>
                     </StackPanel>
                 </ListViewItem>
 
@@ -59,14 +59,14 @@
                 </ListViewItem>
                 <ListViewItem Style="{StaticResource ListViewItemStyle}">
                     <StackPanel>
-                        <TextBlock  Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">个性系数:</TextBlock>
-                        <TextBlock  TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding GeXingXiShu}"/>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">个性系数:</TextBlock>
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding GeXingXiShu}"/>
                     </StackPanel>
                 </ListViewItem>
                 <ListViewItem Style="{StaticResource ListViewItemStyle}">
                     <StackPanel>
-                        <TextBlock  Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">性格类型:</TextBlock>
-                        <TextBlock  TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding XingGeLeiXing}"/>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">性格类型:</TextBlock>
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding XingGeLeiXing}"/>
                     </StackPanel>
                 </ListViewItem>
                 <ListViewItem Style="{StaticResource ListViewItemStyle}">
@@ -86,6 +86,7 @@
                 <ProgressRing Name="ProgressRing" Width="70" Height="70" IsActive="True"></ProgressRing>
                 <TextBlock HorizontalAlignment="Center">正在查询</TextBlock>
             </StackPanel>
+            <Image Name="MyImage"></Image>
         </Grid>
     </Grid>
     <Page.BottomAppBar>

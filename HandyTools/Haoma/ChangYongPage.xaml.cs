@@ -1,22 +1,14 @@
 ﻿using System.Diagnostics;
-using Windows.Globalization;
-using Windows.Media.SpeechRecognition;
-using Windows.Media.SpeechSynthesis;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Calls;
 using Windows.UI.Popups;
-using Windows.Web.Http;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -29,15 +21,12 @@ namespace HandyTools.Haoma
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class GuishudiPage : Page
+    public sealed partial class ChangYongPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        SpeechRecognizer _recognizer;
-        IAsyncOperation<SpeechRecognitionResult> _recoOperation;
-
-
-        public GuishudiPage()
+        public List<ChangyongCategory> ChangyongCategories { get; set; }
+        public ChangYongPage()
         {
             this.InitializeComponent();
 
@@ -109,16 +98,6 @@ namespace HandyTools.Haoma
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            if (_recognizer == null)
-            {
-                _recognizer = new SpeechRecognizer();
-            }
-
-            List<string> strList = new List<string>()
-            {
-                "aaa","bbb","ccc"
-            };
-            AutoSuggestBox.ItemsSource = strList;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -128,55 +107,49 @@ namespace HandyTools.Haoma
 
         #endregion
 
-        private void GuishudiPage_OnLoaded(object sender, RoutedEventArgs e)
+        private async void ChangYongPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            AutoSuggestBox.Focus(FocusState.Programmatic);
+            try
+            {
+                string data = await HttpClientHelper.GetWithUtf8(API.ChangYongData);
+                if (string.IsNullOrWhiteSpace(data))
+                {
+                    MessageDialog dialog = new MessageDialog("数据错误，请稍后重试！", "错误");
+                    dialog.ShowAsync();
+                    return;
+                }
+                List<ChangyongCategory> ChangyongCategories = HtmlHelper.ParseChangyong(data);
+
+                List<Changyong> changyongs = new List<Changyong>();
+                foreach (var changyongCategory in ChangyongCategories)
+                {
+                    changyongs.AddRange(changyongCategory.Changyongs);
+                }
+                cvsActivities.Source = from c in changyongs group c by c.Category into g select new { GroupName = g.Key, Items = g, Count = g.Count(), IWidth=Window.Current.Bounds.Width };
+                //cvsActivities.Source = changyongs.GroupBy(n => n.Category);
+                (DataSemanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvsActivities.View.CollectionGroups;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
-
-        private async void SearchCode(string text)
+      
+        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            if(text.Length != 11)
-            {
-                MessageDialog dialog = new MessageDialog("请输入11位手机号！", "提示");
-                dialog.ShowAsync();
-                return;
-            }
-            ProgressStackPanel.Visibility = Visibility.Visible;
-            string html = await HttpClientHelper.GetWithGbk(API.HaomaUrl, text);
-            Guishudi guishudi = HtmlHelper.ParseGuishudiResult(html);
-
-            if (guishudi == null)
-            {
-                NonoTextBlock.Visibility = Visibility.Visible;
-                ResultListView.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                ResultGrid.DataContext = guishudi;
-                ResultListView.Header = string.Format("查询结果({0}):", text);
-                NonoTextBlock.Visibility = Visibility.Collapsed;
-                ResultListView.Visibility = Visibility.Visible;
-            }
-            ProgressStackPanel.Visibility = Visibility.Collapsed;
+            var item = e.ClickedItem as Changyong;
+            PhoneCallManager.ShowPhoneCallUI(item.Value.Replace("-",""), item.Name);
         }
 
         private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                SearchCode(AutoSuggestBox.Text);
-            }
-            catch (Exception exp)
-            {
-                MessageDialog messageDialog = new MessageDialog(exp.Message);
-                messageDialog.ShowAsync();
-            }
+
         }
 
-        private void JixiongButton_OnClick(object sender, RoutedEventArgs e)
+        private void BaoAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (JixiongPage), AutoSuggestBox.Text);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Data.Html;
+using Windows.Data.Json;
+using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using HandyTools.Haoma;
 using HtmlAgilityPack;
 
@@ -77,6 +81,38 @@ namespace HandyTools.Common
                     }
                     return jiXiong;
                 }
+            }
+            return null;
+        }
+
+        internal static List<ChangyongCategory> ParseChangyong(string data)
+        {
+            try
+            {
+                JsonObject jsonObject = JsonObject.Parse(data);
+                var categories = new List<ChangyongCategory>();
+                string update = jsonObject["update"].GetString();
+                JsonArray jsonArray = jsonObject["data"].GetArray();
+                foreach (var item in jsonArray)
+                {
+                    var itemObject = item.GetObject();
+                    ChangyongCategory category = new ChangyongCategory() { UpdateTime = update, Title = itemObject.Keys.First(), Changyongs = new List<Changyong>()};
+                    category.Width = Window.Current.Bounds.Width;
+                    var codeJsonArray = itemObject.Values.First().GetArray();
+                    foreach (var codeItem in codeJsonArray)
+                    {
+                        var codeObject = codeItem.GetObject();
+                        var changyong = new Changyong() { Name = codeObject.Keys.First(), Value = codeObject.Values.First().GetString(), Category = category.Title};
+                        category.Changyongs.Add(changyong);
+                    }
+                    categories.Add(category);
+                }
+                return categories;
+            }
+            catch (Exception e)
+            {
+                MessageDialog dialog = new MessageDialog(e.Message,"错误");
+                dialog.ShowAsync();
             }
             return null;
         }

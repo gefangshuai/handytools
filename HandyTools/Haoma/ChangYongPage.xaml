@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="HandyTools.Haoma.ChangYongPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools.Haoma"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="ChangYongPage_OnLoaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <UserControl.Resources>
+        <CollectionViewSource x:Name="cvsActivities" IsSourceGrouped="True" ItemsPath="Items"/>
+        <local:ListGroupStyleSelector x:Key="listGroupStyleSelector"/>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="0" Margin="15 0">
+            <TextBlock Text="全国公共服务号码查询" Style="{StaticResource ListViewItemTextBlockStyle}" />
+            <TextBlock  Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">点击条目可直接拨打电话</TextBlock>
+        </StackPanel>
+        <!--TODO: 应将内容放入以下网格-->
+        <SemanticZoom Grid.Row="1" Name="DataSemanticZoom">
+            <SemanticZoom.ZoomedInView >
+                <ListView ItemsSource="{Binding Source={StaticResource cvsActivities}}"
+                          IsItemClickEnabled="True"
+                          SelectionMode="None"
+                          ItemClick="ListViewBase_OnItemClick"
+                          GroupStyleSelector="{StaticResource listGroupStyleSelector}" Margin="15 5">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5" BorderThickness="1 0 0 0" BorderBrush="DodgerBlue">
+                                <StackPanel Margin="10 0 0 0">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="../Assets/imgs/phone.png" Height="14" VerticalAlignment="Bottom" Margin="0 0 10 0"></Image>
+                                        <TextBlock Text="{Binding Value}" VerticalAlignment="Bottom" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <ListView Name="GroupListView"
+                          HorizontalContentAlignment="Stretch"
+                          SelectionMode="None"
+                          Background="Black" Opacity="0.8">
+                    <ListView.Header>
+                        <Grid Margin="0 30"></Grid>
+                    </ListView.Header>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="White" Width="{Binding Group.IWidth}" Margin="20 10">
+                                <TextBlock Margin="15 5" Text="{Binding Group.GroupName}" Style="{StaticResource ListViewItemTextBlockStyle}" FontSize="24"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Name="SearchAppBarButton" Label="查询" Icon="Accept" Click="SearchAppBarButton_OnClick"></AppBarButton>
+            <AppBarButton Name="BaoAppBarButton" Label="上报新号码" Click="BaoAppBarButton_OnClick" Icon="Orientation"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

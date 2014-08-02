@@ -1,4 +1,8 @@
-﻿using HandyTools.Common;
+﻿using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Media.Imaging;
+using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -124,7 +128,7 @@ namespace HandyTools.Haoma
         {
             string text = AutoSuggestBox.Text;
             ProgressStackPanel.Visibility = Visibility.Visible;
-            string html = await HttpClientHelper.Get(API.JiXiong, text);
+            string html = await HttpClientHelper.GetWithGbk(API.JiXiong, text);
             JiXiong jiXiong = HtmlHelper.ParseJiXiongResult(html);
 
             if (jiXiong == null)
@@ -147,5 +151,6 @@ namespace HandyTools.Haoma
             if (string.IsNullOrWhiteSpace(AutoSuggestBox.Text))
                 AutoSuggestBox.Focus(FocusState.Programmatic);
         }
+
     }
 }
