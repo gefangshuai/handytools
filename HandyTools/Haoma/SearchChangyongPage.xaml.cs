@@ -127,7 +127,7 @@ namespace HandyTools.Haoma
             if (listChangyongs != null)
             {
                 var text = SearchTextBox.Text;
-                DataListView.ItemsSource = listChangyongs.Where(n => n.Name.StartsWith(text) || n.Value.StartsWith(text));
+                DataListView.ItemsSource = listChangyongs.Where(n => n.Name.Contains(text) || n.Value.Contains(text));
             }
         }
     }

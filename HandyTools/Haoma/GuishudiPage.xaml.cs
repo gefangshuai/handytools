@@ -33,16 +33,13 @@ namespace HandyTools.Haoma
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        SpeechRecognizer _recognizer;
-        IAsyncOperation<SpeechRecognitionResult> _recoOperation;
-
 
         public GuishudiPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
-            NavigationCacheMode = NavigationCacheMode.Required;
+            NavigationCacheMode = NavigationCacheMode.Disabled;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -109,16 +106,7 @@ namespace HandyTools.Haoma
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            if (_recognizer == null)
-            {
-                _recognizer = new SpeechRecognizer();
-            }
 
-            List<string> strList = new List<string>()
-            {
-                "aaa","bbb","ccc"
-            };
-            AutoSuggestBox.ItemsSource = strList;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -136,7 +124,7 @@ namespace HandyTools.Haoma
 
         private async void SearchCode(string text)
         {
-            if(text.Length != 11)
+            if (text.Length != 11)
             {
                 MessageDialog dialog = new MessageDialog("请输入11位手机号！", "提示");
                 dialog.ShowAsync();
@@ -159,6 +147,7 @@ namespace HandyTools.Haoma
                 ResultListView.Visibility = Visibility.Visible;
             }
             ProgressStackPanel.Visibility = Visibility.Collapsed;
+            SettingsHelper.AddShoujiHistory(text);
         }
 
         private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
@@ -176,7 +165,20 @@ namespace HandyTools.Haoma
 
         private void JixiongButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (JixiongPage), AutoSuggestBox.Text);
+            Frame.Navigate(typeof(JixiongPage), AutoSuggestBox.Text);
+        }
+
+        private void AutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            var arr = SettingsHelper.GetShoujiHistory();
+            if (arr != null)
+                AutoSuggestBox.ItemsSource = arr.Where(n => n.StartsWith(AutoSuggestBox.Text) );
+        }
+
+        private void ClearAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsHelper.ClearShoujiHistory();
+            new MessageDialog("搜索记录已清空！", "恭喜").ShowAsync();
         }
     }
 }

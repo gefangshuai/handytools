@@ -9,9 +9,9 @@
     Loaded="GuishudiPage_OnLoaded">
     <Page.Resources>
         <x:String x:Key="TitleString">号码归属地查询</x:String>
-        
+
     </Page.Resources>
-   
+
     <Grid x:Name="LayoutRoot">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -24,7 +24,8 @@
         </Grid.RowDefinitions>
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15,0">
-            <AutoSuggestBox Name="AutoSuggestBox" Header="{StaticResource TitleString}"/>
+            <AutoSuggestBox TextChanged="AutoSuggestBox_OnTextChanged" Name="AutoSuggestBox" Header="{StaticResource TitleString}">
+            </AutoSuggestBox>
             <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
                 提示: 请输入11位手机号码
             </TextBlock>
@@ -87,7 +88,8 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Find" Name="SearchAppBarButton" Label="查询" Click="SearchAppBarButton_OnClick"></AppBarButton>
+            <AppBarButton Icon="Find" Name="SearchAppBarButton" Label="查询" Click="SearchAppBarButton_OnClick"/>
+            <AppBarButton Icon="Delete" Name="ClearAppBarButton" Label="清空历史" Click="ClearAppBarButton_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
