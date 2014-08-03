@@ -96,6 +96,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Haoma\SearchChangyongPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +133,7 @@
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\SettingsHelper.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Haoma\Changyong.cs" />
     <Compile Include="Haoma\ChangyongCategory.cs" />
@@ -144,6 +149,9 @@
       <DependentUpon>JixiongPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Haoma\ListGroupStyleSelector.cs" />
+    <Compile Include="Haoma\SearchChangyongPage.xaml.cs">
+      <DependentUpon>SearchChangyongPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

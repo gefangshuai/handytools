@@ -9,19 +9,31 @@
         <GroupStyle x:Key="listViewGroupStyle">
             <GroupStyle.HeaderTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0 0 0 2" BorderBrush="DodgerBlue" Margin="0 0 0 10">
+                    <Border BorderThickness="0 0 0 2" Width="{Binding IWidth}" BorderBrush="DodgerBlue" Margin="0 0 0 10">
                         <Grid Margin="5 10 5 5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text='{Binding GroupName}' Foreground="Black" FontSize="24" Style="{StaticResource ListViewItemTextBlockStyle}" />
-                            <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Grid.Column="1" Text="{Binding Count}" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
+                            <TextBlock HorizontalAlignment="Right" Margin="0 0 30 0" VerticalAlignment="Center" Grid.Column="1" Text="{Binding Count}" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </GroupStyle.HeaderTemplate>
         </GroupStyle>
+        
+        <DataTemplate x:Key="ChangyongDataTemplate">
+            <Border Margin="5" BorderThickness="1 0 0 0" BorderBrush="DodgerBlue">
+                <StackPanel Margin="10 0 0 0">
+                    <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/imgs/phone.png" Height="14" VerticalAlignment="Bottom" Margin="0 0 10 0"></Image>
+                        <TextBlock Text="{Binding Value}" Margin="0 5 0 0" VerticalAlignment="Bottom" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
         
         <DataTemplate x:Key="HubSectionDataTemplate">
             <Grid Margin="0 20 0 0">

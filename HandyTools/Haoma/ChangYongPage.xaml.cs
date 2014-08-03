@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Calls;
+using Windows.System;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls.Primitives;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ namespace HandyTools.Haoma
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        public List<ChangyongCategory> ChangyongCategories { get; set; }
+        private List<Changyong> changyongs; 
         public ChangYongPage()
         {
             this.InitializeComponent();
@@ -95,9 +97,57 @@ namespace HandyTools.Haoma
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            try
+            {
+                var localData = await FileHelper.GetChangyongDataFromLocalFile();
+                if (localData == null)
+                {
+                    var confirmDialog = new MessageDialog("系统监测到您本地没有数据文件，是否要联网下载？", "提示");
+                    confirmDialog.Commands.Add(new UICommand("下载"));
+                    confirmDialog.Commands.Add(new UICommand("下次再说"));
+                    var cmd = await confirmDialog.ShowAsync();
+                    if (cmd.Label.Equals("下载"))
+                    {
+                        string data = await DownloadData();
+                        await FileHelper.WriteChangyongDataToLocalFile(data);
+                        localData = data;
+                    }
+                    else
+                    {
+                        // 取消下载
+                        return;
+                    }
+                }
+                var changyongCategories = HtmlHelper.ParseChangyong(localData);
+                LoadData(changyongCategories);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+
+        }
+
+        private async Task<string> DownloadData()
+        {
+            try
+            {
+                string data = await HttpClientHelper.GetWithUtf8(API.ChangYongData);
+                if (string.IsNullOrWhiteSpace(data))
+                {
+                    MessageDialog dialog = new MessageDialog("数据错误，请稍后重试！", "错误");
+                    dialog.ShowAsync();
+                    return null;
+                }
+                return data;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -107,49 +157,76 @@ namespace HandyTools.Haoma
 
         #endregion
 
-        private async void ChangYongPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string data = await HttpClientHelper.GetWithUtf8(API.ChangYongData);
-                if (string.IsNullOrWhiteSpace(data))
-                {
-                    MessageDialog dialog = new MessageDialog("数据错误，请稍后重试！", "错误");
-                    dialog.ShowAsync();
-                    return;
-                }
-                List<ChangyongCategory> ChangyongCategories = HtmlHelper.ParseChangyong(data);
 
-                List<Changyong> changyongs = new List<Changyong>();
-                foreach (var changyongCategory in ChangyongCategories)
-                {
-                    changyongs.AddRange(changyongCategory.Changyongs);
-                }
-                cvsActivities.Source = from c in changyongs group c by c.Category into g select new { GroupName = g.Key, Items = g, Count = g.Count(), IWidth=Window.Current.Bounds.Width };
-                //cvsActivities.Source = changyongs.GroupBy(n => n.Category);
-                (DataSemanticZoom.ZoomedOutView as ListViewBase).ItemsSource = cvsActivities.View.CollectionGroups;
-            }
-            catch (Exception exception)
+        private void LoadData(IEnumerable<ChangyongCategory> changyongCategories)
+        {
+            changyongs = new List<Changyong>();
+            foreach (var changyongCategory in changyongCategories)
             {
-                Debug.WriteLine(exception);
+                changyongs.AddRange(changyongCategory.Changyongs);
             }
+            cvsActivities.Source = from c in changyongs group c by c.Category into g select new { GroupName = g.Key, Items = g, Count = g.Count(), IWidth = Window.Current.Bounds.Width };
+            var listViewBase = DataSemanticZoom.ZoomedOutView as ListViewBase;
+            if (listViewBase != null)
+                listViewBase.ItemsSource = cvsActivities.View.CollectionGroups;
         }
 
-      
+        private async void LoadData()
+        {
+            string data = await FileHelper.GetChangyongDataFromLocalFile();
+            LoadData(HtmlHelper.ParseChangyong(data));
+        }
+
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var item = e.ClickedItem as Changyong;
-            PhoneCallManager.ShowPhoneCallUI(item.Value.Replace("-",""), item.Name);
+            PhoneCallManager.ShowPhoneCallUI(item.Value.Replace("-", ""), item.Name);
         }
 
         private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(SearchChangyongPage), changyongs);
         }
 
-        private void BaoAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void BaoAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var mailUri = new Uri("mailto:gefangshuai@live.com?subject=关于《全国公共服务号码》的反馈");
+            await Launcher.LaunchUriAsync(mailUri);
+        }
+
+        private async void UpdateAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            string webData = await DownloadData();
+            string localData = await FileHelper.GetChangyongDataFromLocalFile();
+
+            if (!string.IsNullOrWhiteSpace(webData) && !string.IsNullOrWhiteSpace(localData))
+            {
+
+                var webCategories = HtmlHelper.ParseChangyong(webData);
+                var localCategories = HtmlHelper.ParseChangyong(localData);
+                var wc = webCategories as IList<ChangyongCategory> ?? webCategories.ToList();
+                var lc = localCategories as IList<ChangyongCategory> ?? localCategories.ToList();
+                if (!wc.FirstOrDefault().UpdateTime.Equals(lc.FirstOrDefault().UpdateTime)) // 有更新
+                {
+                    var dialog = new MessageDialog("发现新数据，是否更新?", "提示");
+                    dialog.Commands.Add(new UICommand("更新", async (action) =>
+                    {
+                        var data = await DownloadData();
+                        await FileHelper.WriteChangyongDataToLocalFile(data);
+                        new MessageDialog("更新成功!", "提示").ShowAsync();
+                        LoadData();
+                    }));
+                    dialog.Commands.Add(new UICommand("不更新", (action) =>
+                    {
+
+                    }));
+                    dialog.ShowAsync();
+                }
+                else
+                {
+                    new MessageDialog("无更新", "提示").ShowAsync();
+                }
+            }
         }
     }
 }

@@ -85,7 +85,7 @@ namespace HandyTools.Common
             return null;
         }
 
-        internal static List<ChangyongCategory> ParseChangyong(string data)
+        internal static IEnumerable<ChangyongCategory> ParseChangyong(string data)
         {
             try
             {
@@ -96,8 +96,13 @@ namespace HandyTools.Common
                 foreach (var item in jsonArray)
                 {
                     var itemObject = item.GetObject();
-                    ChangyongCategory category = new ChangyongCategory() { UpdateTime = update, Title = itemObject.Keys.First(), Changyongs = new List<Changyong>()};
-                    category.Width = Window.Current.Bounds.Width;
+                    ChangyongCategory category = new ChangyongCategory
+                    {
+                        UpdateTime = update,
+                        Title = itemObject.Keys.First(),
+                        Changyongs = new List<Changyong>(),
+                        Width = Window.Current.Bounds.Width
+                    };
                     var codeJsonArray = itemObject.Values.First().GetArray();
                     foreach (var codeItem in codeJsonArray)
                     {

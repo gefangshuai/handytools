@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -14,22 +17,41 @@ namespace HandyTools.Common
 {
     public class FileHelper
     {
-        public static async Task SaveVisualElementToFile(FrameworkElement element, StorageFile file)
+        private const string ChangyongFileName = "changyong";
+        /// <summary>
+        /// 获取本地公共服务号码文件内容
+        /// </summary>
+        /// <returns></returns>
+        public async static Task<string> GetChangyongDataFromLocalFile()
         {
-            var renderTargetBitmap = new RenderTargetBitmap();
-            await renderTargetBitmap.RenderAsync(element, (int)element.ActualWidth, (int)element.ActualHeight);
-            var pixels = await renderTargetBitmap.GetPixelsAsync();
-
-            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            try
             {
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
-                byte[] bytes = pixels.ToArray();
-                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
-                                     BitmapAlphaMode.Premultiplied,
-                                     (uint)element.ActualWidth, (uint)element.ActualHeight,
-                                     96, 96, bytes);
+                StorageFile storageFile = await storageFolder.GetFileAsync(ChangyongFileName);
+                return await FileIO.ReadTextAsync(storageFile);
+            }
+            catch (FileNotFoundException exception)
+            {
+                return null;
+            }
+        }
 
-                await encoder.FlushAsync();
+        /// <summary>
+        /// 将公共服务号码内容写入本地文件
+        /// </summary>
+        /// <param name="data"></param>
+        internal static async Task WriteChangyongDataToLocalFile(string data)
+        {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            try
+            {
+                StorageFile storageFile =
+                    await storageFolder.CreateFileAsync(ChangyongFileName, CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteTextAsync(storageFile, data);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
             }
         }
     }

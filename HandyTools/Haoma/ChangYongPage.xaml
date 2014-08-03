@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Loaded="ChangYongPage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <UserControl.Resources>
         <CollectionViewSource x:Name="cvsActivities" IsSourceGrouped="True" ItemsPath="Items"/>
@@ -30,27 +29,17 @@
             <TextBlock Text="全国公共服务号码查询" Style="{StaticResource ListViewItemTextBlockStyle}" />
             <TextBlock  Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">点击条目可直接拨打电话</TextBlock>
         </StackPanel>
+        
         <!--TODO: 应将内容放入以下网格-->
         <SemanticZoom Grid.Row="1" Name="DataSemanticZoom">
             <SemanticZoom.ZoomedInView >
                 <ListView ItemsSource="{Binding Source={StaticResource cvsActivities}}"
                           IsItemClickEnabled="True"
                           SelectionMode="None"
+                          ItemTemplate="{StaticResource ChangyongDataTemplate}"
                           ItemClick="ListViewBase_OnItemClick"
                           GroupStyleSelector="{StaticResource listGroupStyleSelector}" Margin="15 5">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="5" BorderThickness="1 0 0 0" BorderBrush="DodgerBlue">
-                                <StackPanel Margin="10 0 0 0">
-                                    <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="../Assets/imgs/phone.png" Height="14" VerticalAlignment="Bottom" Margin="0 0 10 0"></Image>
-                                        <TextBlock Text="{Binding Value}" VerticalAlignment="Bottom" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                    
                 </ListView>
             </SemanticZoom.ZoomedInView>
             <SemanticZoom.ZoomedOutView>
@@ -74,7 +63,8 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Name="SearchAppBarButton" Label="查询" Icon="Accept" Click="SearchAppBarButton_OnClick"></AppBarButton>
+            <AppBarButton Name="SearchAppBarButton" Label="查询" Icon="Find" Click="SearchAppBarButton_OnClick"></AppBarButton>
+            <AppBarButton Name="UpdateAppBarButton" Label="检查更新" Icon="Sync" Click="UpdateAppBarButton_OnClick"/>
             <AppBarButton Name="BaoAppBarButton" Label="上报新号码" Click="BaoAppBarButton_OnClick" Icon="Orientation"/>
         </CommandBar>
     </Page.BottomAppBar>
