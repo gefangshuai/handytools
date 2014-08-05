@@ -28,7 +28,9 @@
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
-
+            <ListView>
+                
+            </ListView>
         </Grid>
     </Grid>
     <Page.BottomAppBar>
