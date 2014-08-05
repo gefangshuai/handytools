@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Loaded="ShenfenPage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="LayoutRoot">
@@ -23,13 +24,42 @@
 
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15 0">
-            <TextBox Header="身份证归属地验证" PlaceholderText="请输入身份证号(15位或18位)" Name="DataTextBox"/>
+            <TextBox Header="身份证归属地验证" PlaceholderText="请输入身份证号(15位或18位)" Name="DataTextBox" Text="370786198804203910"/>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
-            <ListView>
-                
+            <ListView Name="DataListView">
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">地区:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Region}"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">生日:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Region}"/>
+                    </Grid>
+                </ListViewItem>
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">性别:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Region}"/>
+                    </Grid>
+                </ListViewItem>
             </ListView>
         </Grid>
     </Grid>

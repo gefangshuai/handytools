@@ -1,4 +1,7 @@
-﻿using HandyTools.Common;
+﻿using System.Diagnostics;
+using Windows.Storage;
+using Windows.UI.Popups;
+using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
+using SharpYaml.Serialization;
 
 namespace HandyTools.Shenfen
 {
@@ -33,6 +37,7 @@ namespace HandyTools.Shenfen
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -108,9 +113,39 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            var text = DataTextBox.Text;
+            if (text.Length != 15 && text.Length != 18)
+            {
+                new MessageDialog("请输入正确的身份证号!", "错误").ShowAsync();
+                return; 
+            }
+
+            Uri uri = new Uri("ms-appx:///Data/idcard");
+            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+            string content = await FileIO.ReadTextAsync(file);
+            var input = new StringReader(content);
+            // Load the stream
+            var yaml = new YamlStream();
+            yaml.Load(input);
+
+            Shenfen shenfen = new Shenfen();
+
+            var mapping = (YamlMappingNode)(yaml.Documents[0].RootNode);
+            foreach (var entry in mapping.Children)
+            {
+                if (text.Substring(0, 6).Equals(entry.Key.ToString()))
+                {
+                    shenfen.Region = entry.Value.ToString();
+                }
+            }
+            DataListView.ItemsSource = shenfen;
+        }
+
+        private void ShenfenPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            DataTextBox.Focus(FocusState.Programmatic);
         }
     }
 }
