@@ -116,6 +116,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Shenfen\ShenfenPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -165,6 +169,9 @@
     <Compile Include="HaomaListPage.xaml.cs">
       <DependentUpon>HaomaListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shenfen\ShenfenPage.xaml.cs">
+      <DependentUpon>ShenfenPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -192,9 +199,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Shenfen\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\sdk\HtmlAgilityPack.1.4.6\winrt45\HtmlAgilityPack.dll</HintPath>

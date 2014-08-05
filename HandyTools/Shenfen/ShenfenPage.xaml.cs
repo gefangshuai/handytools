@@ -17,19 +17,18 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Shenfen;
 
-namespace HandyTools
+namespace HandyTools.Shenfen
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ShenfenListPage : Page
+    public sealed partial class ShenfenPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public ShenfenListPage()
+        public ShenfenPage()
         {
             this.InitializeComponent();
 
@@ -109,15 +108,9 @@ namespace HandyTools
 
         #endregion
 
-        private void ShenfenListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (ShenfenListView.SelectedIndex)
-            {
-                case 0:
-                    App.MainPage.Frame.Navigate(typeof (ShenfenPage));
-                    break;
-            }
-            ShenfenListView.SelectedItem = null;
+            
         }
     }
 }
