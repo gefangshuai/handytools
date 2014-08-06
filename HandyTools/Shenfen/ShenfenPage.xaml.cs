@@ -131,7 +131,7 @@ namespace HandyTools.Shenfen
             yaml.Load(input);
 
             Shenfen shenfen = new Shenfen();
-
+            // 获得地区
             var mapping = (YamlMappingNode)(yaml.Documents[0].RootNode);
             foreach (var entry in mapping.Children)
             {
@@ -140,7 +140,44 @@ namespace HandyTools.Shenfen
                     shenfen.Region = entry.Value.ToString();
                 }
             }
-            DataListView.ItemsSource = shenfen;
+
+            // 解析15位身份证号
+            if (text.Length == 15)
+            {
+                var year = text.Substring(6, 2);
+                var mounth = text.Substring(8, 2);
+                var day = text.Substring(10, 2);
+                shenfen.BirthDay = string.Format("19{0}年{1}月{2}日", year, mounth, day);
+                var s = int.Parse(text.Substring(14, 1));
+                if (s%2 == 0)
+                {
+                    shenfen.Gender = "女";
+                }
+                else
+                {
+                    shenfen.Gender = "男";
+                }
+            }
+            // 解析18位身份证号
+            else
+            {
+                var year = text.Substring(6, 4);
+                var mounth = text.Substring(10, 2);
+                var day = text.Substring(12, 2);
+                shenfen.BirthDay = string.Format("{0}年{1}月{2}日", year, mounth, day);
+                var s = int.Parse(text.Substring(16, 1));
+                if (s % 2 == 0)
+                {
+                    shenfen.Gender = "女";
+                }
+                else
+                {
+                    shenfen.Gender = "男";
+                }
+            }
+
+            DataListView.DataContext = shenfen;
+            DataListView.Visibility = Visibility.Visible;
         }
 
         private void ShenfenPage_OnLoaded(object sender, RoutedEventArgs e)

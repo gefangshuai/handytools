@@ -24,12 +24,12 @@
 
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15 0">
-            <TextBox Header="身份证归属地验证" PlaceholderText="请输入身份证号(15位或18位)" Name="DataTextBox" Text="370786198804203910"/>
+            <TextBox Header="身份证归属地验证" PlaceholderText="请输入身份证号(15位或18位)" Name="DataTextBox"/>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
-            <ListView Name="DataListView">
+            <ListView Name="DataListView" Visibility="Collapsed">
                 <ListViewItem>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -47,7 +47,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">生日:</TextBlock>
-                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Region}"/>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding BirthDay}"/>
                     </Grid>
                 </ListViewItem>
                 <ListViewItem>
@@ -57,9 +57,18 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">性别:</TextBlock>
-                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Region}"/>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Gender}"/>
                     </Grid>
                 </ListViewItem>
+                
+                <ListView.Footer>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">温馨提示：</TextBlock>
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap">
+                            身份证归属地查询只提供根据字典文件进行归属地、出生年月、性别的校验功能，不对身份证号码正确与否进行判断。如需更精确的校验查询，请另寻它法。
+                        </TextBlock>
+                    </StackPanel>
+                </ListView.Footer>
             </ListView>
         </Grid>
     </Grid>
