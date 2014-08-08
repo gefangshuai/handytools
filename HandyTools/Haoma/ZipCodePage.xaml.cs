@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Net;
+using System.Text;
+using Windows.Data.Html;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -18,24 +21,22 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Haoma;
 
-namespace HandyTools
+namespace HandyTools.Haoma
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class HaomaListPage : Page
+    public sealed partial class ZipCodePage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public HaomaListPage()
+        public ZipCodePage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
-            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -111,25 +112,35 @@ namespace HandyTools
 
         #endregion
 
-
-        private void HaomaListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (HaomaListView.SelectedIndex)
+            try
             {
-                case 0:
-                    App.MainPage.Frame.Navigate(typeof(GuishudiPage));
-                    break;
-                case 1:
-                    App.MainPage.Frame.Navigate(typeof (JixiongPage));
-                    break;
-                case  2:
-                    App.MainPage.Frame.Navigate(typeof (ChangYongPage));
-                    break;
-                case 3:
-                    App.MainPage.Frame.Navigate(typeof (ZipCodePage));
-                    break;
+                NonoTextBlock.Visibility = Visibility.Collapsed;
+                ProgressStackPanel.Visibility = Visibility.Visible;
+                var text = DataTextBox.Text;
+                var html = await HttpClientHelper.GetWithUtf8(string.Format(API.ZipCode, text));
+                var result = HtmlHelper.ParseZipCode(html);
+                if (result != null)
+                {
+                    ResultListView.DataContext = result;
+                    ResultListView.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    NonoTextBlock.Visibility = Visibility.Visible;
+                }
             }
-            HaomaListView.SelectedItem = null;
+            finally
+            {
+                ProgressStackPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        private void ZipCodePage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            DataTextBox.Focus(FocusState.Programmatic);
         }
     }
 }

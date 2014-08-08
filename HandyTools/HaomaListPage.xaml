@@ -50,13 +50,27 @@
                         <ColumnDefinition Width="70"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Margin="5" Source="Assets/imgs/phone.png" Height="42" />
+                    <Image Margin="5" Source="Assets/imgs/phone.png" Height="52" />
                     <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
                         <TextBlock FontSize="36">常用电话号码</TextBlock>
                         <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">全国公众服务电话号码查询</TextBlock>
                     </StackPanel>
                 </Grid>
             </ListViewItem>
+            <ListViewItem>
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="Assets/imgs/changtu.png" Height="48" />
+                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
+                        <TextBlock FontSize="36">区号地址查询</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">查询地址、长途电话的区号</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ListViewItem>
+            
         </ListView>
     </Grid>
 </Page>

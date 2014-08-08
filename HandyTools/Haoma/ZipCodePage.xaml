@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="HandyTools.Haoma.ZipCodePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools.Haoma"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="ZipCodePage_OnLoaded">
+    <Page.Resources>
+        <x:String x:Key="TitleString">区号地址查询</x:String>
+    </Page.Resources>
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="15 0">
+            <TextBox Header="{StaticResource TitleString}" Name="DataTextBox" PlaceholderText="输入地名或区号"></TextBox>
+        </StackPanel>
+
+        <!--TODO: 应将内容放入以下网格-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
+            <TextBlock Name="NonoTextBlock" Visibility="Collapsed" Style="{StaticResource ListViewItemTextBlockStyle}" HorizontalAlignment="Center">无结果！</TextBlock>
+            <ListView Name="ResultListView" Visibility="Collapsed">
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">区号:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Code}"/>
+                    </Grid>
+                </ListViewItem>
+
+                <ListViewItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource TitleStyle}">归属地:</TextBlock>
+                        <TextBlock Grid.Column="1" Style="{StaticResource ResultStyle}" Text="{Binding Area}"/>
+                    </Grid>
+                </ListViewItem>
+            </ListView>
+            <StackPanel Margin="0 100 0 0" Visibility="Collapsed" Name="ProgressStackPanel">
+                <ProgressRing Name="ProgressRing" Width="70" Height="70" IsActive="True"></ProgressRing>
+                <TextBlock HorizontalAlignment="Center">正在查询</TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Name="SearchAppBarButton" Icon="Find" Label="搜索" Click="SearchAppBarButton_OnClick"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

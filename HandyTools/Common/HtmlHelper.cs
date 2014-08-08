@@ -121,5 +121,38 @@ namespace HandyTools.Common
             }
             return null;
         }
+
+        internal static ZipCode ParseZipCode(string html)
+        {
+            ZipCode result = null;
+            try
+            {
+
+                HtmlDocument document = LoadHtml(html);
+                var table = document.DocumentNode.Descendants("table").FirstOrDefault();
+                if (table.InnerText.Contains("区号") && table.InnerText.Contains("归属地"))
+                {
+                    document = LoadHtml(table.InnerHtml);
+                    result = new ZipCode();
+                    foreach (var tr in document.DocumentNode.Descendants("tr"))
+                    {
+                        var text = HtmlUtilities.ConvertToText(tr.InnerHtml);
+                        if (text.Contains("区号"))
+                        {
+                            result.Code = text.Replace("区号", "").Trim();
+                        }
+                        if (text.Contains("归属地"))
+                        {
+                            result.Area = text.Replace("归属地", "").Trim();
+                        }
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Debug.WriteLine(exp);
+            }
+            return result;
+        }
     }
 }

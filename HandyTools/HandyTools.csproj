@@ -100,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Haoma\ZipCodePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +160,10 @@
     <Compile Include="Haoma\SearchChangyongPage.xaml.cs">
       <DependentUpon>SearchChangyongPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Haoma\ZipCode.cs" />
+    <Compile Include="Haoma\ZipCodePage.xaml.cs">
+      <DependentUpon>ZipCodePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -181,12 +189,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\1348306808109.jpg" />
+    <Content Include="Assets\imgs\changtu.png" />
+    <Content Include="Assets\imgs\chepai.png" />
     <Content Include="Assets\imgs\handy.png" />
     <Content Include="Assets\imgs\jixiong.png" />
     <Content Include="Assets\imgs\mobile.png" />
     <Content Include="Assets\imgs\phone.png" />
     <Content Include="Assets\imgs\search.png" />
+    <Content Include="Assets\imgs\usercard.png" />
     <Content Include="Assets\imgs\voice.gif" />
+    <Content Include="Assets\imgs\zipcode.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

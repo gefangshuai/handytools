@@ -29,12 +29,7 @@
                     <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">国内邮政编码查询</TextBlock>
                 </StackPanel>
             </ListViewItem>
-            <ListViewItem>
-                <StackPanel Style="{StaticResource ListViewStyle}">
-                    <TextBlock FontSize="36">长途电话区号查询</TextBlock>
-                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">长途电话区号查询</TextBlock>
-                </StackPanel>
-            </ListViewItem>
+
             <ListViewItem>
                 <StackPanel Style="{StaticResource ListViewStyle}">
                     <TextBlock FontSize="36">车牌号查询</TextBlock>
