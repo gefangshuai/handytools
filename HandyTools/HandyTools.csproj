@@ -124,6 +124,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Shenfen\JieMeng.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -181,6 +185,9 @@
     <Compile Include="Shenfen\ShenfenPage.xaml.cs">
       <DependentUpon>ShenfenPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shenfen\JieMeng.xaml.cs">
+      <DependentUpon>JieMeng.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -188,9 +195,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\1348306808109.jpg" />
+    <Content Include="Assets\background.jpg" />
     <Content Include="Assets\imgs\changtu.png" />
     <Content Include="Assets\imgs\chepai.png" />
+    <Content Include="Assets\imgs\dream.png" />
     <Content Include="Assets\imgs\handy.png" />
     <Content Include="Assets\imgs\jixiong.png" />
     <Content Include="Assets\imgs\mobile.png" />
@@ -219,8 +227,15 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\sdk\HtmlAgilityPack.1.4.6\winrt45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="SharpYaml">
+    <Reference Include="SharpYaml, Version=1.2.0.13711, Culture=neutral, PublicKeyToken=1ced8108e942bc02, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SharpYaml.1.2.0\lib\SharpYaml.dll</HintPath>
+    </Reference>
+    <Reference Include="TimeZones">
+      <HintPath>..\packages\WinRTTimeZones.1.1\lib\portable-win81+wpa81\TimeZones.dll</HintPath>
+    </Reference>
+    <Reference Include="TimeZones.Platform">
+      <HintPath>..\packages\WinRTTimeZones.1.1\lib\portable-win81+wpa81\TimeZones.Platform.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    >
     
     <Grid>
         <Grid.ChildrenTransitions>
@@ -27,7 +27,7 @@
                     <Image Margin="5" Source="Assets/imgs/mobile.png" Height="52" />
                     <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
                         <TextBlock FontSize="36">归属地查询</TextBlock>
-                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">仅支持11位手机号码查询</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">支持固话和手机号码查询</TextBlock>
                     </StackPanel>
                 </Grid>
             </ListViewItem>

@@ -33,16 +33,12 @@
                     <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:HaomaListPage"></Frame>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="地区查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
+            <HubSection Header="其它查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
                 <DataTemplate>
                     <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:ShenfenListPage"></Frame>
                 </DataTemplate>
             </HubSection>
-            <HubSection Header="其它查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
-                <DataTemplate>
-                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:OtherPage"></Frame>
-                </DataTemplate>
-            </HubSection>
+            
         </Hub>
        
     </Grid>

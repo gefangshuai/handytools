@@ -1,9 +1,4 @@
 ﻿using System.Diagnostics;
-using Windows.Globalization;
-using Windows.Media.SpeechRecognition;
-using Windows.Media.SpeechSynthesis;
-using Windows.UI.Popups;
-using Windows.Web.Http;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -23,23 +18,23 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
+using TimeZones;
 
-namespace HandyTools.Haoma
+namespace HandyTools.Shenfen
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class GuishudiPage : Page
+    public sealed partial class JieMengPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public GuishudiPage()
+        public JieMengPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
-            NavigationCacheMode = NavigationCacheMode.Disabled;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -103,10 +98,17 @@ namespace HandyTools.Haoma
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-
+            try
+            {
+    
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -115,74 +117,5 @@ namespace HandyTools.Haoma
         }
 
         #endregion
-
-        private void GuishudiPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            AutoSuggestBox.Focus(FocusState.Programmatic);
-        }
-
-
-        private async void SearchCode(string text)
-        {
-            
-            ProgressStackPanel.Visibility = Visibility.Visible;
-            Guishudi guishudi;
-            if (text.Length == 11)
-            {
-                string html = await HttpClientHelper.GetWithGbk(API.HaomaUrl, text);
-                guishudi = HtmlHelper.ParseGuishudiResult(html);
-            }
-            else
-            {
-                string html = await HttpClientHelper.GetWithUtf8(API.GuhuaUrl, text);
-                guishudi = HtmlHelper.ParseGuhua(html);
-            }
-
-            if (guishudi == null)
-            {
-                NonoTextBlock.Visibility = Visibility.Visible;
-                ResultListView.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                ResultGrid.DataContext = guishudi;
-                ResultListView.Header = string.Format("查询结果({0}):", text);
-                NonoTextBlock.Visibility = Visibility.Collapsed;
-                ResultListView.Visibility = Visibility.Visible;
-            }
-            ProgressStackPanel.Visibility = Visibility.Collapsed;
-            SettingsHelper.AddShoujiHistory(text);
-        }
-
-        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SearchCode(AutoSuggestBox.Text);
-            }
-            catch (Exception exp)
-            {
-                MessageDialog messageDialog = new MessageDialog(exp.Message);
-                messageDialog.ShowAsync();
-            }
-        }
-
-        private void JixiongButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(JixiongPage), AutoSuggestBox.Text);
-        }
-
-        private void AutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            var arr = SettingsHelper.GetShoujiHistory();
-            if (arr != null)
-                AutoSuggestBox.ItemsSource = arr.Where(n => n.StartsWith(AutoSuggestBox.Text) );
-        }
-
-        private void ClearAppBarButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            SettingsHelper.ClearShoujiHistory();
-            new MessageDialog("搜索记录已清空！", "恭喜").ShowAsync();
-        }
     }
 }

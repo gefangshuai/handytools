@@ -39,7 +39,8 @@ namespace HandyTools.Common
             if (settings.Values.ContainsKey("shoujiHistory") && settings.Values["shoujiHistory"] != null)
             {
                 history = settings.Values["shoujiHistory"] as string;
-                history += str + ",";
+                if(history != null && !history.Contains(str + ","))
+                    history += str + ",";
             }
             else
             {

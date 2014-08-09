@@ -27,7 +27,7 @@
             <AutoSuggestBox TextChanged="AutoSuggestBox_OnTextChanged" Name="AutoSuggestBox" Header="{StaticResource TitleString}">
             </AutoSuggestBox>
             <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
-                提示: 请输入11位手机号码
+                提示: 请输入固话区号或11位手机号码
             </TextBlock>
         </StackPanel>
         <Grid Grid.Row="1" Margin="15" Name="ResultGrid">

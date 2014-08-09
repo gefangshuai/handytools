@@ -154,5 +154,39 @@ namespace HandyTools.Common
             }
             return result;
         }
+
+        internal static Guishudi ParseGuhua(string html)
+        {
+            Guishudi result = null;
+            try
+            {
+
+                HtmlDocument document = LoadHtml(html);
+                var table = document.DocumentNode.Descendants("table").FirstOrDefault();
+                if (table.InnerText.Contains("电话号码") && table.InnerText.Contains("归属地"))
+                {
+                    document = LoadHtml(table.InnerHtml);
+                    result = new Guishudi();
+                    foreach (var tr in document.DocumentNode.Descendants("tr"))
+                    {
+                        var text = HtmlUtilities.ConvertToText(tr.InnerHtml);
+                        if (text.Contains("电话号码"))
+                        {
+                            result.Code = text.Replace("电话号码", "").Trim();
+                        }
+                        if (text.Contains("归属地"))
+                        {
+                            result.Attribution = text.Replace("归属地", "").Trim();
+                        }
+                        result.Type = "固话";
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Debug.WriteLine(exp);
+            }
+            return result;
+        }
     }
 }

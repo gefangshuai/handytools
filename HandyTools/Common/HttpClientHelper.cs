@@ -34,7 +34,7 @@ namespace HandyTools.Common
         {
             try
             {
-                return await GetHttpClient().GetStringAsync(url);
+                return await GetHttpClient().GetStringAsync(new Uri(string.Format(url, par)));
             }
             catch (Exception e)
             {

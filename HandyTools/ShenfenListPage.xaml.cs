@@ -116,6 +116,9 @@ namespace HandyTools
                 case 0:
                     App.MainPage.Frame.Navigate(typeof (ShenfenPage));
                     break;
+                case 1:
+                    App.MainPage.Frame.Navigate(typeof(JieMengPage));
+                    break;
             }
             ShenfenListView.SelectedItem = null;
         }
