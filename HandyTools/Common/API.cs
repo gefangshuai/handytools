@@ -14,7 +14,5 @@ namespace HandyTools.Common
         public static string ChangYongData = "http://git.oschina.net/gefangshuai/pushdata/raw/master/handytools/changyongdata.json";
         public static string ZipCode = "http://quhao.51240.com/{0}__quhao/";
 
-        public static string JieMeng =
-            "http://biaozhunshijian.51240.com/web_system/51240_com_www/system/file/biaozhunshijian/time.js/";
     }
 }

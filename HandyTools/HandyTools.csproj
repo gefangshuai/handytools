@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.props" Condition="Exists('..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,6 +15,7 @@
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NuGetPackageImportStamp>f09e87d2</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -146,6 +148,7 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SettingsHelper.cs" />
+    <Compile Include="Common\SqliteHelper.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Haoma\Changyong.cs" />
     <Compile Include="Haoma\ChangyongCategory.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="HaomaListPage.xaml.cs">
       <DependentUpon>HaomaListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shenfen\Items.cs" />
     <Compile Include="Shenfen\Shenfen.cs" />
     <Compile Include="Shenfen\ShenfenPage.xaml.cs">
       <DependentUpon>ShenfenPage.xaml</DependentUpon>
@@ -188,6 +192,7 @@
     <Compile Include="Shenfen\JieMeng.xaml.cs">
       <DependentUpon>JieMeng.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shenfen\Type.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -231,15 +236,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SharpYaml.1.2.0\lib\SharpYaml.dll</HintPath>
     </Reference>
-    <Reference Include="TimeZones">
-      <HintPath>..\packages\WinRTTimeZones.1.1\lib\portable-win81+wpa81\TimeZones.dll</HintPath>
-    </Reference>
-    <Reference Include="TimeZones.Platform">
-      <HintPath>..\packages\WinRTTimeZones.1.1\lib\portable-win81+wpa81\TimeZones.Platform.dll</HintPath>
+    <Reference Include="SQLitePCL, Version=3.8.5.0, Culture=neutral, PublicKeyToken=bddade01e9c850c5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SQLitePCL.3.8.5.0\lib\wpa81\SQLitePCL.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app.db" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.WP81, version=3.8.5">
+      <Name>SQLite for Windows Phone 8.1</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
@@ -248,6 +260,14 @@
     <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.props'))" />
+    <Error Condition="!Exists('..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.targets'))" />
+  </Target>
+  <Import Project="..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.targets" Condition="Exists('..\packages\SQLitePCL.3.8.5.0\build\wpa81\SQLitePCL.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

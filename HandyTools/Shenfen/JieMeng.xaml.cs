@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using TimeZones;
+using SQLitePCL;
 
 namespace HandyTools.Shenfen
 {
@@ -64,7 +64,7 @@ namespace HandyTools.Shenfen
         /// 事件的来源; 通常为 <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">事件数据，其中既提供在最初请求此页时传递给
-        /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
+        /// <see cref="Frame.Navigate(Category, Object)"/> 的导航参数，又提供
         /// 此页在以前会话期间保留的状态的
         /// 字典。 首次访问页面时，该状态将为 null。</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
@@ -101,14 +101,6 @@ namespace HandyTools.Shenfen
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            try
-            {
-    
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -117,5 +109,11 @@ namespace HandyTools.Shenfen
         }
 
         #endregion
+
+        private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            List<Category> types = SqliteHelper.GeTypes();
+
+        }
     }
 }
