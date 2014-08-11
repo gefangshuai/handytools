@@ -193,6 +193,8 @@
       <DependentUpon>JieMeng.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shenfen\Type.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

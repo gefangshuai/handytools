@@ -41,6 +41,7 @@ namespace HandyTools
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
             StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
             App.MainPage = this;
+            SqliteHelper.InitDb();
         }
 
         /// <summary>

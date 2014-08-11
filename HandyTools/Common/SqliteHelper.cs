@@ -1,22 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using HandyTools.Shenfen;
-using SQLitePCL;
+using SQLite;
+using SQLiteConnection = SQLitePCL.SQLiteConnection;
 
 namespace HandyTools.Common
 {
-    public class SqliteHelper
+    public static class SqliteHelper
     {
-        private static SQLiteConnection GetConnection()
+        private const string DbName = "app.db";
+
+        public static async void InitDb()
         {
-            SQLiteConnection connection = null;
+            StorageFile seedFile = await StorageFile.GetFileFromPathAsync(
+                Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, DbName));
+            // copy the StorageFile to the ApplicationData folder
+            await seedFile.CopyAsync(ApplicationData.Current.LocalFolder, DbName, NameCollisionOption.ReplaceExisting);
+        }
+
+        private static SQLiteAsyncConnection GetConnection()
+        {
+            SQLiteAsyncConnection connection = null;
             try
             {
-                connection = new SQLiteConnection("app.db");
+                connection =
+                    new SQLiteAsyncConnection(Path.Combine(ApplicationData.Current.LocalFolder.Path, DbName));
             }
             catch (Exception e)
             {
@@ -25,29 +39,20 @@ namespace HandyTools.Common
             return connection;
         }
 
-        public static List<Category> GeTypes()
+        public static async Task<List<Category>> GeTypes()
         {
             List<Category> types = new List<Category>();
             try
             {
-                SQLiteConnection connection = GetConnection();
-                using (var statement = connection.Prepare(@"select id, name, url from categories"))
-                {
-                    Category type = new Category()
-                    {
-                        Id = (long)statement[0],
-                        Name = (string)statement[1],
-                        Url = (string)statement[2]
-                    };
-                    types.Add(type);
-                }
+                SQLiteAsyncConnection db = GetConnection();
+                types = await db.QueryAsync<Category>("select * from Category");
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
             }
             return types;
-        } 
+        }
 
     }
 }

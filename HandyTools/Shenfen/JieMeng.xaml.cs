@@ -110,9 +110,9 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
+        private async void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<Category> types = SqliteHelper.GeTypes();
+            List<Category> types = await SqliteHelper.GeTypes();
 
         }
     }
