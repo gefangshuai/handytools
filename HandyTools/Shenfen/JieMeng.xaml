@@ -20,18 +20,28 @@
         </Grid.ChildrenTransitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 标题面板 -->
-        <StackPanel Grid.Row="0" Margin="15 0">
-            <TextBlock Text="{StaticResource TitleString}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-        </StackPanel>
-        
         <!--TODO: 应将内容放入以下网格-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
-            <TextBlock Name="TimeTextBlock" Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
+        <Grid x:Name="ContentRoot">
+            <Pivot Title="周公解梦">
+                <PivotItem Header="目录">
+                    <ListView ItemsSource="{Binding Categories}" Name="DataListView"  SelectionMode="None" IsItemClickEnabled="True" ItemClick="DataListView_OnItemClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="10 5">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource ListViewItemTextBlockStyle}"/>
+                                    <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" Text="{Binding Description}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </PivotItem>
+                <PivotItem Header="收藏">
+                    
+                </PivotItem>
+            </Pivot>
         </Grid>
     </Grid>
 </Page>

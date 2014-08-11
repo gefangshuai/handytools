@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using HandyTools.Shenfen;
 using SQLite;
-using SQLiteConnection = SQLitePCL.SQLiteConnection;
 
 namespace HandyTools.Common
 {
@@ -39,13 +38,19 @@ namespace HandyTools.Common
             return connection;
         }
 
-        public static async Task<List<Category>> GeTypes()
+        public static async Task<List<Category>> GetCategories()
         {
             List<Category> types = new List<Category>();
             try
             {
                 SQLiteAsyncConnection db = GetConnection();
                 types = await db.QueryAsync<Category>("select * from Category");
+                foreach (var category in types)
+                {
+                    List<Item> items = await db.QueryAsync<Item>("select * from Item where TypeId=" + category.Id);
+                    category.Items = items;
+                    category.Description = string.Format("包含{0}、{1}等{2}个梦境", items[0].Title, items[1].Title, items.Count);
+                }
             }
             catch (Exception e)
             {

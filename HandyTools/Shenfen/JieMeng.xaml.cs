@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using SQLitePCL;
+using HandyTools.Data;
 
 namespace HandyTools.Shenfen
 {
@@ -28,11 +29,14 @@ namespace HandyTools.Shenfen
     public sealed partial class JieMengPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        public ObservableCollection<Category> Categories { get; set; }
 
         public JieMengPage()
         {
+            Categories = new ObservableCollection<Category>();
             this.InitializeComponent();
+            DataListView.DataContext = this;
+
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -45,15 +49,6 @@ namespace HandyTools.Shenfen
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
-        }
-
-        /// <summary>
-        /// 获取此 <see cref="Page"/> 的视图模型。
-        /// 可将其更改为强类型视图模型。
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
         }
 
         /// <summary>
@@ -110,10 +105,19 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private async void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
+        private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<Category> types = await SqliteHelper.GeTypes();
+            List<Category> types = AppData.Categories;
+            foreach (var category in types)
+            {
+                Categories.Add(category);
+            }
+        }
 
+        private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem;
+            Frame.Navigate(typeof(JieMengItem), item);
         }
     }
 }

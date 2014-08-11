@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -329,6 +330,7 @@ namespace HandyTools.Common
                 {
                     nextPageIndex++;
                     nextPageKey = "Page-" + nextPageIndex;
+                    Debug.WriteLine(nextPageKey);
                 }
 
                 // 将导航参数传递给新页
