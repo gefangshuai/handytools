@@ -122,6 +122,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Shenfen\JieMengItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shenfen\ShenfenPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,8 +187,12 @@
       <DependentUpon>HaomaListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shenfen\Item.cs" />
+    <Compile Include="Shenfen\ItemContentConvert.cs" />
     <Compile Include="Shenfen\JieMengItem.xaml.cs">
       <DependentUpon>JieMengItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shenfen\JieMengItemView.xaml.cs">
+      <DependentUpon>JieMengItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shenfen\Shenfen.cs" />
     <Compile Include="Shenfen\ShenfenPage.xaml.cs">
@@ -251,7 +259,7 @@
     <SDKReference Include="Microsoft.VCLibs, version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.WP81, version=3.8.5">
+    <SDKReference Include="SQLite.WP81, Version=3.8.5">
       <Name>SQLite for Windows Phone 8.1</Name>
     </SDKReference>
   </ItemGroup>

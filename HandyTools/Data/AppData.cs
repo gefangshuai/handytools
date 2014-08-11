@@ -13,14 +13,17 @@ namespace HandyTools.Data
         public static List<Category> Categories;
         public static List<Item> Items;
 
-        internal static async void InitData()
+        internal static async Task<List<Category>> InitCategoriesData()
         {
             Categories = await SqliteHelper.GetCategories();
             Items = new List<Item>();
             foreach (var category in Categories)
             {
-                Items.AddRange(category.Items);    
+                Items.AddRange(category.Items);
             }
+            return Categories;
         }
+
+        public static Item Item;
     }
 }

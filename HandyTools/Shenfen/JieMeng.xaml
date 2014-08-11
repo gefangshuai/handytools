@@ -43,5 +43,9 @@
                 </PivotItem>
             </Pivot>
         </Grid>
+        <StackPanel VerticalAlignment="Center" Name="ProgressPanel" Visibility="Collapsed">
+            <ProgressBar IsIndeterminate="True"></ProgressBar>
+            <TextBlock HorizontalAlignment="Center">正在加载数据</TextBlock>
+        </StackPanel>
     </Grid>
 </Page>

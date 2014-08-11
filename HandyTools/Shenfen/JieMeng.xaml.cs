@@ -37,7 +37,7 @@ namespace HandyTools.Shenfen
             this.InitializeComponent();
             DataListView.DataContext = this;
 
-
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -107,11 +107,21 @@ namespace HandyTools.Shenfen
 
         private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            List<Category> types = AppData.Categories;
+            if (Categories == null || Categories.Count == 0)
+            {
+                ProgressPanel.Visibility = Visibility.Visible;
+                LoadData();
+            }
+        }
+
+        private async void LoadData()
+        {
+            List<Category> types = await AppData.InitCategoriesData();
             foreach (var category in types)
             {
                 Categories.Add(category);
             }
+            ProgressPanel.Visibility = Visibility.Collapsed;
         }
 
         private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)

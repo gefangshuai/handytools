@@ -7,7 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.Resources>
+        
+    </Page.Resources>
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -28,14 +30,18 @@
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
-            <ListView Name="DataListView" ItemsSource="{Binding Items}"> 
-               
+            <ListView  Name="DataListView" ItemsSource="{Binding Items}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="DataListView_OnItemClick"> 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Title}" Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
-                            <TextBlock Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}" MaxLines="4"/>
-                        </StackPanel>
+                        <Border Margin="0 0 0 10" BorderThickness="0 0 0 1" BorderBrush="DimGray">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 0 0 3">
+                                    <TextBlock Text="梦见"  FontWeight="Bold"  Margin="0 0 5 0" Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Title}" Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
+                                </StackPanel>
+                                <TextBlock Margin="0 0 0 5" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}" MaxLines="4"/>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

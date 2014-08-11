@@ -43,7 +43,6 @@ namespace HandyTools
             StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
             App.MainPage = this;
             SqliteHelper.InitDb();
-            AppData.InitData();
         }
 
         /// <summary>
