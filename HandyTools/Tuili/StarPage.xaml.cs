@@ -1,4 +1,5 @@
-﻿using Windows.UI.Popups;
+﻿using Windows.UI;
+using Windows.UI.Popups;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -37,15 +38,30 @@ namespace HandyTools.Tuili
             this.navigationHelper = new NavigationHelper(this);
             NavigationCacheMode = NavigationCacheMode.Required;
 
+
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
-        private void InitData()
+        private async void InitData()
         {
+            SettinGrid.Width = Window.Current.CoreWindow.Bounds.Width;
             StarComboBox.ItemsSource = AppData.GetStars();
             var star = SettingsHelper.GetStar();
-           
+            if (star == null)
+            {
+                MessageDialog dialog = new MessageDialog("第一次使用本程序需要设置您的基本信息，是否设置?", "提示");
+                dialog.Commands.Add(new UICommand("设置", command =>
+                {
+                    SettingsPopup.IsOpen = true;
+                }));
+                dialog.Commands.Add(new UICommand("不设置"));
+                await dialog.ShowAsync();
+            }
+            else
+            {
+                StarTextBlock.Text = star.ToString();
+            }
         }
 
         /// <summary>
@@ -122,15 +138,41 @@ namespace HandyTools.Tuili
 
         private void SettingAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            SettinGrid.Width = Window.Current.CoreWindow.Bounds.Width;
             SettingsPopup.IsOpen = true;
         }
-
-       
 
         private void StarPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             InitData();
+            var star = SettingsHelper.GetStar();
+            if(star != null)
+                LoadData(star);
+        }
+
+        private async void LoadData(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
+        }
+
+        private void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var star = StarComboBox.SelectedItem as Star;
+            if (star != null)
+            {
+                SettingsHelper.AddStar(star);
+                StarTextBlock.Text = star.ToString();
+                SettingsPopup.IsOpen = false;
+            }
+        }
+
+        private void CancelAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsPopup.IsOpen = false;
+        }
+
+        private void StarTextBlock_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            SettingsPopup.IsOpen = true;
         }
     }
 }

@@ -23,10 +23,10 @@
             <Hub.HeaderTemplate>
                 <DataTemplate>
                     <Border BorderThickness="0 0 0 5">
-                        <Grid Margin="0 10 0 0">
+                        <StackPanel Margin="0 10 0 0">
                             <TextBlock Text="{Binding}" FontSize="62"></TextBlock>
                             <TextBlock Style="{StaticResource ListViewItemContentTextBlockStyle}">您的生活小助手!</TextBlock>
-                        </Grid>
+                        </StackPanel>
                     </Border>
                 </DataTemplate>
             </Hub.HeaderTemplate>

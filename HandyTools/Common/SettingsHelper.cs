@@ -12,7 +12,7 @@ namespace HandyTools.Common
     {
         private static ApplicationDataContainer GetLocalSettings()
         {
-             return ApplicationData.Current.LocalSettings;
+            return ApplicationData.Current.LocalSettings;
         }
 
         #region ShoujiHistory
@@ -41,7 +41,7 @@ namespace HandyTools.Common
             if (settings.Values.ContainsKey("shoujiHistory") && settings.Values["shoujiHistory"] != null)
             {
                 history = settings.Values["shoujiHistory"] as string;
-                if(history != null && !history.Contains(str + ","))
+                if (history != null && !history.Contains(str + ","))
                     history += str + ",";
             }
             else
@@ -64,10 +64,20 @@ namespace HandyTools.Common
         {
             ApplicationDataContainer settings = GetLocalSettings();
             Star star = null;
-            if (settings.Values.ContainsKey("mystar"))
-                star = settings.Values["mystar"] as Star;
+            if (settings.Values.ContainsKey("starId"))
+            {
+                string starId = settings.Values["starId"].ToString();
+                if(starId != null)
+                    star = AppData.GetStars().Find(n => n.Id == int.Parse(starId));
+            }
             return star;
-        } 
+        }
 
+
+        internal static void AddStar(Star star)
+        {
+            ApplicationDataContainer settings = GetLocalSettings();
+            settings.Values["starId"] = star.Id;
+        }
     }
 }
