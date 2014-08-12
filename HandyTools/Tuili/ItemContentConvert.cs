@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace HandyTools.Shenfen
+namespace HandyTools.Tuili
 {
     public class ItemContentConvert : IValueConverter
     {

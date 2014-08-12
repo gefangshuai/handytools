@@ -90,7 +90,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Haoma\JixiongPage.xaml">
+    <Page Include="Tuili\JixiongPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -110,6 +110,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TuiliPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ShenfenListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,11 +122,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shenfen\JieMengItem.xaml">
+    <Page Include="Tuili\JieMengItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shenfen\JieMengItemView.xaml">
+    <Page Include="Tuili\JieMengItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,7 +134,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Shenfen\JieMeng.xaml">
+    <Page Include="Tuili\JieMeng.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tuili\StarPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,8 +169,8 @@
     <Compile Include="Haoma\GuishudiPage.xaml.cs">
       <DependentUpon>GuishudiPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Haoma\JiXiong.cs" />
-    <Compile Include="Haoma\JixiongPage.xaml.cs">
+    <Compile Include="Tuili\JiXiong.cs" />
+    <Compile Include="Tuili\JixiongPage.xaml.cs">
       <DependentUpon>JixiongPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Haoma\ListGroupStyleSelector.cs" />
@@ -180,28 +188,34 @@
       <DependentUpon>OtherPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TuiliPage.xaml.cs">
+      <DependentUpon>TuiliPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShenfenListPage.xaml.cs">
       <DependentUpon>ShenfenListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="HaomaListPage.xaml.cs">
       <DependentUpon>HaomaListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shenfen\Item.cs" />
-    <Compile Include="Shenfen\ItemContentConvert.cs" />
-    <Compile Include="Shenfen\JieMengItem.xaml.cs">
+    <Compile Include="Tuili\Item.cs" />
+    <Compile Include="Tuili\ItemContentConvert.cs" />
+    <Compile Include="Tuili\JieMengItem.xaml.cs">
       <DependentUpon>JieMengItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shenfen\JieMengItemView.xaml.cs">
+    <Compile Include="Tuili\JieMengItemView.xaml.cs">
       <DependentUpon>JieMengItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shenfen\Shenfen.cs" />
     <Compile Include="Shenfen\ShenfenPage.xaml.cs">
       <DependentUpon>ShenfenPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shenfen\JieMeng.xaml.cs">
+    <Compile Include="Tuili\JieMeng.xaml.cs">
       <DependentUpon>JieMeng.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Shenfen\Category.cs" />
+    <Compile Include="Tuili\Category.cs" />
+    <Compile Include="Tuili\StarPage.xaml.cs">
+      <DependentUpon>StarPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
   </ItemGroup>
@@ -220,6 +234,7 @@
     <Content Include="Assets\imgs\mobile.png" />
     <Content Include="Assets\imgs\phone.png" />
     <Content Include="Assets\imgs\search.png" />
+    <Content Include="Assets\imgs\star.png" />
     <Content Include="Assets\imgs\usercard.png" />
     <Content Include="Assets\imgs\voice.gif" />
     <Content Include="Assets\imgs\zipcode.png" />

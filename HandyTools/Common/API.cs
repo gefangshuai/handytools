@@ -13,6 +13,7 @@ namespace HandyTools.Common
         public static string JiXiong = "http://jx.ip138.com/default.asp?k={0}";
         public static string ChangYongData = "http://git.oschina.net/gefangshuai/pushdata/raw/master/handytools/changyongdata.json";
         public static string ZipCode = "http://quhao.51240.com/{0}__quhao/";
+        public static string StarDay = "http://api.uihoo.com/astro/astro.http.php?fun=day&id={0}&format=json";
 
     }
 }

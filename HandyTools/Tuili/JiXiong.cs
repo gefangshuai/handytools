@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandyTools.Haoma
+namespace HandyTools.Tuili
 {
     public class JiXiong
     {

@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using Windows.UI.Popups;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -21,25 +20,32 @@ using Windows.UI.Xaml.Navigation;
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 using HandyTools.Data;
 
-namespace HandyTools.Shenfen
+namespace HandyTools.Tuili
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class JieMengItem : Page
+    public sealed partial class StarPage : Page
     {
         private NavigationHelper navigationHelper;
-        public ObservableCollection<Item> Items { get; set; }
-        public JieMengItem()
-        {
-            Items = new ObservableCollection<Item>();
-            this.InitializeComponent();
-            DataListView.DataContext = this;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-            this.NavigationCacheMode = NavigationCacheMode.Required;
+        public StarPage()
+        {
+            this.InitializeComponent();
+
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
+
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+        }
+
+        private void InitData()
+        {
+            StarComboBox.ItemsSource = AppData.GetStars();
+            var star = SettingsHelper.GetStar();
+           
         }
 
         /// <summary>
@@ -50,6 +56,14 @@ namespace HandyTools.Shenfen
             get { return this.navigationHelper; }
         }
 
+        /// <summary>
+        /// 获取此 <see cref="Page"/> 的视图模型。
+        /// 可将其更改为强类型视图模型。
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
+        }
 
         /// <summary>
         /// 使用在导航过程中传递的内容填充页。  在从以前的会话
@@ -96,18 +110,7 @@ namespace HandyTools.Shenfen
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-
-            Debug.WriteLine("---go in jiemeng items page---");
-            Category category = e.Parameter as Category;
-            if (category != null)
-            {
-                Items.Clear();
-                TitleTextBlock.Text = category.Name;
-                foreach (var item in category.Items)
-                {
-                    Items.Add(item);
-                }
-            }
+            
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -117,13 +120,17 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)
+        private void SettingAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = e.ClickedItem as Item;
-            if (item != null)
-            {
-                Frame.Navigate(typeof (JieMengItemView), item);
-            }
+            SettinGrid.Width = Window.Current.CoreWindow.Bounds.Width;
+            SettingsPopup.IsOpen = true;
+        }
+
+       
+
+        private void StarPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            InitData();
         }
     }
 }

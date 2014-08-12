@@ -9,7 +9,15 @@
         <GroupStyle x:Key="listViewGroupStyle">
             <GroupStyle.HeaderTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0 0 0 2" Width="{Binding IWidth}" BorderBrush="DodgerBlue" Margin="0 0 0 10">
+                    <Border BorderThickness="0 0 0 3" Width="{Binding IWidth}" Margin="0 0 0 10">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Color="Black" Offset="0.1"/>
+                                <GradientStop Color="Gray" Offset="0.13"/>
+                                <GradientStop Color="WhiteSmoke" Offset="0.98"/>
+                                <GradientStop Color="WhiteSmoke" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
                         <Grid Margin="5 10 5 5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>

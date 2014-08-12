@@ -119,13 +119,10 @@ namespace HandyTools
                 case 0:
                     App.MainPage.Frame.Navigate(typeof(GuishudiPage));
                     break;
-                case 1:
-                    App.MainPage.Frame.Navigate(typeof (JixiongPage));
-                    break;
-                case  2:
+               case  1:
                     App.MainPage.Frame.Navigate(typeof (ChangYongPage));
                     break;
-                case 3:
+                case 2:
                     App.MainPage.Frame.Navigate(typeof (ZipCodePage));
                     break;
             }

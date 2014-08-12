@@ -1,7 +1,5 @@
-﻿using Windows.Graphics.Imaging;
-using Windows.Storage;
-using Windows.UI.Popups;
-using Windows.UI.Xaml.Media.Imaging;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -21,23 +19,27 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
+using HandyTools.Data;
+using HandyTools.Tuili;
 
-namespace HandyTools.Haoma
+namespace HandyTools.Tuili
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class JixiongPage : Page
+    public sealed partial class JieMengPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        public ObservableCollection<Category> Categories { get; set; }
 
-        public JixiongPage()
+        public JieMengPage()
         {
+            Categories = new ObservableCollection<Category>();
             this.InitializeComponent();
+            DataListView.DataContext = this;
 
-            this.navigationHelper = new NavigationHelper(this);
             NavigationCacheMode = NavigationCacheMode.Required;
+            this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -51,15 +53,6 @@ namespace HandyTools.Haoma
         }
 
         /// <summary>
-        /// 获取此 <see cref="Page"/> 的视图模型。
-        /// 可将其更改为强类型视图模型。
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
-
-        /// <summary>
         /// 使用在导航过程中传递的内容填充页。  在从以前的会话
         /// 重新创建页时，也会提供任何已保存状态。
         /// </summary>
@@ -67,7 +60,7 @@ namespace HandyTools.Haoma
         /// 事件的来源; 通常为 <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">事件数据，其中既提供在最初请求此页时传递给
-        /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
+        /// <see cref="Frame.Navigate(Category, Object)"/> 的导航参数，又提供
         /// 此页在以前会话期间保留的状态的
         /// 字典。 首次访问页面时，该状态将为 null。</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
@@ -101,15 +94,9 @@ namespace HandyTools.Haoma
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            var code = e.Parameter as string;
-            if (!string.IsNullOrWhiteSpace(code))
-            {
-                AutoSuggestBox.Text = code;
-                SearchJiXiong();
-            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -119,38 +106,29 @@ namespace HandyTools.Haoma
 
         #endregion
 
-        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            SearchJiXiong();
-        }
-
-        private async void SearchJiXiong()
-        {
-            string text = AutoSuggestBox.Text;
-            ProgressStackPanel.Visibility = Visibility.Visible;
-            string html = await HttpClientHelper.GetWithGbk(API.JiXiong, text);
-            JiXiong jiXiong = HtmlHelper.ParseJiXiongResult(html);
-
-            if (jiXiong == null)
+            if (Categories == null || Categories.Count == 0)
             {
-                NonoTextBlock.Visibility = Visibility.Visible;
-                ResultListView.Visibility = Visibility.Collapsed;
+                ProgressPanel.Visibility = Visibility.Visible;
+                LoadData();
             }
-            else
-            {
-                ContentRoot.DataContext = jiXiong;
-                ResultListView.Header = string.Format("查询结果({0}):", text);
-                NonoTextBlock.Visibility = Visibility.Collapsed;
-                ResultListView.Visibility = Visibility.Visible;
-            }
-            ProgressStackPanel.Visibility = Visibility.Collapsed;
         }
 
-        private void JixiongPage_OnLoaded(object sender, RoutedEventArgs e)
+        private async void LoadData()
         {
-            if (string.IsNullOrWhiteSpace(AutoSuggestBox.Text))
-                AutoSuggestBox.Focus(FocusState.Programmatic);
+            List<Category> types = await AppData.InitCategoriesData();
+            foreach (var category in types)
+            {
+                Categories.Add(category);
+            }
+            ProgressPanel.Visibility = Visibility.Collapsed;
         }
 
+        private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem;
+            Frame.Navigate(typeof(JieMengItem), item);
+        }
     }
 }

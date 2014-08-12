@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="HandyTools.Tuili.StarPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools.Shenfen"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="StarPage_OnLoaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Popup Name="SettingsPopup" IsLightDismissEnabled="True">
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <EdgeUIThemeTransition Edge="Top"></EdgeUIThemeTransition>
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+            <Border Background="WhiteSmoke" Name="SettinGrid" BorderThickness="0 0 0 4">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="Gray" Offset="0.03"/>
+                        <GradientStop Color="Gray" Offset="0.98"/>
+                        <GradientStop Color="Gainsboro" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <Grid Margin="25">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource BaseTextBlockStyle}">设置您的个人信息</TextBlock>
+                    <ComboBox Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Name="StarComboBox"/>
+                    <AppBarButton IsCompact="True" Label="确定" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="0" Icon="Accept"/>
+                    <AppBarButton IsCompact="True" Label="取消" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2" Icon="Cancel" />
+                </Grid>
+            </Border>
+        </Popup>
+        <!--TODO: 应将内容放入以下网格-->
+        <Grid x:Name="ContentRoot">
+            <Pivot Title="星座运势">
+                <PivotItem Header="每日星座运势">
+                    <Grid>
+                        
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="明日星座运势"></PivotItem>
+                <PivotItem Header="每周星座运势"></PivotItem>
+                <PivotItem Header="每月星座运势"></PivotItem>
+                <PivotItem Header="年度星座运势"></PivotItem>
+                <PivotItem Header="年度爱情运势"></PivotItem>
+            </Pivot>
+        </Grid>
+
+    </Grid>
+
+
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Name="SettingAppBarButton" Click="SettingAppBarButton_OnClick" Label="资料设置" Icon="Contact" />
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

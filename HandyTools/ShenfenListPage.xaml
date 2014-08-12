@@ -30,19 +30,6 @@
                 </Grid>
             </ListViewItem>
 
-            <ListViewItem>
-                <Grid Width="400">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Image Margin="5" Source="Assets/imgs/dream.png" Height="50" />
-                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
-                        <TextBlock FontSize="36">周公解梦</TextBlock>
-                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">国内身份证号码查询归属地验证</TextBlock>
-                    </StackPanel>
-                </Grid>
-            </ListViewItem>
         </ListView>
 
     </Grid>

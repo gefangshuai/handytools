@@ -25,12 +25,12 @@ namespace HandyTools
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ShenfenListPage : Page
+    public sealed partial class TuiliPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public ShenfenListPage()
+        public TuiliPage()
         {
             this.InitializeComponent();
 
@@ -110,16 +110,21 @@ namespace HandyTools
 
         #endregion
 
-        private void ShenfenListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TuiListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (ShenfenListView.SelectedIndex)
+            switch (TuiListView.SelectedIndex)
             {
                 case 0:
-                    App.MainPage.Frame.Navigate(typeof (ShenfenPage));
+                    App.MainPage.Frame.Navigate(typeof(JixiongPage));
                     break;
-               
+                case 1:
+                    App.MainPage.Frame.Navigate(typeof(JieMengPage));
+                    break;
+                case 2:
+                    App.MainPage.Frame.Navigate(typeof(StarPage));
+                    break;
             }
-            ShenfenListView.SelectedItem = null;
+            TuiListView.SelectedItem = null;
         }
     }
 }

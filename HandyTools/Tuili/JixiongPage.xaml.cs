@@ -1,4 +1,8 @@
-﻿using HandyTools.Common;
+﻿using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Media.Imaging;
+using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,21 +22,22 @@ using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
-namespace HandyTools.Shenfen
+namespace HandyTools.Tuili
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class JieMengItemView : Page
+    public sealed partial class JixiongPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public JieMengItemView()
+        public JixiongPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -99,8 +104,12 @@ namespace HandyTools.Shenfen
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            var item = e.Parameter as Item;
-            LayoutRoot.DataContext = item;
+            var code = e.Parameter as string;
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                AutoSuggestBox.Text = code;
+                SearchJiXiong();
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -109,5 +118,39 @@ namespace HandyTools.Shenfen
         }
 
         #endregion
+
+        private void SearchAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SearchJiXiong();
+        }
+
+        private async void SearchJiXiong()
+        {
+            string text = AutoSuggestBox.Text;
+            ProgressStackPanel.Visibility = Visibility.Visible;
+            string html = await HttpClientHelper.GetWithGbk(API.JiXiong, text);
+            JiXiong jiXiong = HtmlHelper.ParseJiXiongResult(html);
+
+            if (jiXiong == null)
+            {
+                NonoTextBlock.Visibility = Visibility.Visible;
+                ResultListView.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ContentRoot.DataContext = jiXiong;
+                ResultListView.Header = string.Format("查询结果({0}):", text);
+                NonoTextBlock.Visibility = Visibility.Collapsed;
+                ResultListView.Visibility = Visibility.Visible;
+            }
+            ProgressStackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void JixiongPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(AutoSuggestBox.Text))
+                AutoSuggestBox.Focus(FocusState.Programmatic);
+        }
+
     }
 }

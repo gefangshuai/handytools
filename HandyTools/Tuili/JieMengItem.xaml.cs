@@ -19,25 +19,23 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Data;
 
-namespace HandyTools.Shenfen
+namespace HandyTools.Tuili
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class JieMengPage : Page
+    public sealed partial class JieMengItem : Page
     {
         private NavigationHelper navigationHelper;
-        public ObservableCollection<Category> Categories { get; set; }
-
-        public JieMengPage()
+        public ObservableCollection<Item> Items { get; set; }
+        public JieMengItem()
         {
-            Categories = new ObservableCollection<Category>();
+            Items = new ObservableCollection<Item>();
             this.InitializeComponent();
             DataListView.DataContext = this;
 
-            NavigationCacheMode = NavigationCacheMode.Required;
+            this.NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -51,6 +49,7 @@ namespace HandyTools.Shenfen
             get { return this.navigationHelper; }
         }
 
+
         /// <summary>
         /// 使用在导航过程中传递的内容填充页。  在从以前的会话
         /// 重新创建页时，也会提供任何已保存状态。
@@ -59,7 +58,7 @@ namespace HandyTools.Shenfen
         /// 事件的来源; 通常为 <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">事件数据，其中既提供在最初请求此页时传递给
-        /// <see cref="Frame.Navigate(Category, Object)"/> 的导航参数，又提供
+        /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
         /// 此页在以前会话期间保留的状态的
         /// 字典。 首次访问页面时，该状态将为 null。</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
@@ -93,9 +92,21 @@ namespace HandyTools.Shenfen
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            Debug.WriteLine("---go in jiemeng items page---");
+            Category category = e.Parameter as Category;
+            if (category != null)
+            {
+                Items.Clear();
+                TitleTextBlock.Text = category.Name;
+                foreach (var item in category.Items)
+                {
+                    Items.Add(item);
+                }
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -105,29 +116,13 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private void JieMengPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (Categories == null || Categories.Count == 0)
-            {
-                ProgressPanel.Visibility = Visibility.Visible;
-                LoadData();
-            }
-        }
-
-        private async void LoadData()
-        {
-            List<Category> types = await AppData.InitCategoriesData();
-            foreach (var category in types)
-            {
-                Categories.Add(category);
-            }
-            ProgressPanel.Visibility = Visibility.Collapsed;
-        }
-
         private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e.ClickedItem;
-            Frame.Navigate(typeof(JieMengItem), item);
+            var item = e.ClickedItem as Item;
+            if (item != null)
+            {
+                Frame.Navigate(typeof (JieMengItemView), item);
+            }
         }
     }
 }

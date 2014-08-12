@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using HandyTools.Data;
 
 namespace HandyTools.Common
 {
@@ -14,6 +15,7 @@ namespace HandyTools.Common
              return ApplicationData.Current.LocalSettings;
         }
 
+        #region ShoujiHistory
         public static IEnumerable<string> GetShoujiHistory()
         {
             ApplicationDataContainer settings = GetLocalSettings();
@@ -57,5 +59,15 @@ namespace HandyTools.Common
                 settings.Values["shoujiHistory"] = null;
             }
         }
+        #endregion
+        public static Star GetStar()
+        {
+            ApplicationDataContainer settings = GetLocalSettings();
+            Star star = null;
+            if (settings.Values.ContainsKey("mystar"))
+                star = settings.Values["mystar"] as Star;
+            return star;
+        } 
+
     }
 }

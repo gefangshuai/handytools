@@ -9,6 +9,7 @@ using Windows.Data.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using HandyTools.Haoma;
+using HandyTools.Tuili;
 using HtmlAgilityPack;
 
 namespace HandyTools.Common

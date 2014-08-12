@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
+using HandyTools.Tuili;
 using SharpYaml.Serialization;
 
 namespace HandyTools.Shenfen

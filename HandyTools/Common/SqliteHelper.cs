@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using HandyTools.Shenfen;
+using HandyTools.Tuili;
 using SQLite;
 
 namespace HandyTools.Common
