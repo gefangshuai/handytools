@@ -25,6 +25,7 @@
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15 0">
             <TextBox Header="身份证归属地验证" PlaceholderText="请输入身份证号(15位或18位)" Name="DataTextBox"/>
+            <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">请输入身份证号(15位或18位)</TextBlock>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->

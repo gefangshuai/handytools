@@ -27,6 +27,7 @@
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15 0">
             <TextBox Header="{StaticResource TitleString}" Name="DataTextBox" PlaceholderText="输入地名或区号"></TextBox>
+            <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">输入地名或区号</TextBlock>
         </StackPanel>
 
         <!--TODO: 应将内容放入以下网格-->
