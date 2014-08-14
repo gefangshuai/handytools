@@ -8,6 +8,6 @@ namespace HandyTools.Tuili
 {
     public class StarWeeks
     {
-        public List<StarWeek> Weeks { get; set; } 
+        public List<StarWeek> StarDaysWeek { get; set; } 
     }
 }

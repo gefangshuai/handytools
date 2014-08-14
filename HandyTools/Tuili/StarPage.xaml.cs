@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Globalization;
 using Windows.UI;
@@ -162,24 +163,26 @@ namespace HandyTools.Tuili
             //LoadData();
         }
 
-        private void LoadData()
+        private async void LoadData()
         {
+            ProgressPanel.Visibility = Visibility.Visible;
             var star = SettingsHelper.GetStar();
             switch (DataPivot.SelectedIndex)
             {
                 case 0:
-                    LoadStarDay(star);
+                    await LoadStarDay(star);
                     break;
                 case 1:
-                    LoadStarTomorrow(star);
+                    await LoadStarTomorrow(star);
                     break;
                 case 2:
-                    LoadStarWeek(star);
+                    await LoadStarWeek(star);
                     break;
-            }    
+            }
+            ProgressPanel.Visibility = Visibility.Collapsed;
         }
 
-        private async void LoadStarDay(Star star)
+        private async Task LoadStarDay(Star star)
         {
             try
             {
@@ -187,7 +190,7 @@ namespace HandyTools.Tuili
                 List<StarDay> starDays = await SqliteHelper.GetStarDays(DateTime.Now.ToString("yyyy-MM-dd"), star.Id);
                 if (starDays.Count == 0)
                 {
-                    LoadStarDayFromJson(star);
+                    await LoadStarDayFromJson(star);
                 }
                 else
                 {
@@ -203,7 +206,7 @@ namespace HandyTools.Tuili
             }
         }
 
-        private async void LoadStarTomorrow(Star star)
+        private async Task LoadStarTomorrow(Star star)
         {
             try
             {
@@ -211,7 +214,7 @@ namespace HandyTools.Tuili
                 List<StarDay> starDays = await SqliteHelper.GetStarDays(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), star.Id);
                 if (starDays.Count == 0)
                 {
-                    LoadStarTomorrowFromJson(star);
+                    await LoadStarTomorrowFromJson(star);
                 }
                 else
                 {
@@ -227,12 +230,12 @@ namespace HandyTools.Tuili
             }
         }
 
-        private void LoadStarWeek(Star star)
+        private async Task LoadStarWeek(Star star)
         {
             try
             {
                 StarDaysWeek.Clear();
-                LoadStarWeekFromJson(star);
+                await LoadStarWeekFromJson(star);
             }
             catch (Exception e)
             {
@@ -241,21 +244,21 @@ namespace HandyTools.Tuili
         }
 
 
-        private async void LoadStarDayFromJson(Star star)
+        private async Task LoadStarDayFromJson(Star star)
         {
             string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
             if (json != null)
                 LoadDayAndTomorrowFromJson(star, json, StarDays, true);
         }
 
-        private async void LoadStarTomorrowFromJson(Star star)
+        private async Task LoadStarTomorrowFromJson(Star star)
         {
             string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarTomorrow, star.Id));
             if (json != null)
                 LoadDayAndTomorrowFromJson(star, json, StarDaysTomorrow, false);
         }
-        
-        private async void LoadStarWeekFromJson(Star star)
+
+        private async Task LoadStarWeekFromJson(Star star)
         {
             string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarWeek, star.Id));
             if (json != null)
@@ -267,13 +270,13 @@ namespace HandyTools.Tuili
                     if (item.ValueType == JsonValueType.Object)
                     {
                         if (item.GetObject().ContainsKey("title"))
-                            starWeek.Title = item.GetObject()["title"].GetString();
+                            starWeek.Title = item.GetObject()["title"].GetString().Replace("\n", "");
 
                         if (item.GetObject().ContainsKey("title2")) 
                         {
                             JsonArray titleArray = item.GetObject()["title2"].GetArray();
-                            starWeek.Title1 = titleArray.GetStringAt(0);
-                            starWeek.Title2 = titleArray.GetStringAt(1);
+                            starWeek.Title1 = titleArray.GetStringAt(0).Replace("\n", "");
+                            starWeek.Title2 = titleArray.GetStringAt(1).Replace("\n", "");
                         }
                         if (item.GetObject().ContainsKey("rank"))
                         {
@@ -289,13 +292,13 @@ namespace HandyTools.Tuili
                             }
                         }
                         if (item.GetObject().ContainsKey("value"))
-                            starWeek.Value = item.GetObject()["value"].GetString();
+                            starWeek.Value = item.GetObject()["value"].GetString().Replace("\n", "");
 
                         if (item.GetObject().ContainsKey("value2"))
                         {
                             JsonArray valueArray = item.GetObject()["value2"].GetArray();
-                            starWeek.Value1 = valueArray.GetStringAt(0);
-                            starWeek.Value2 = valueArray.GetStringAt(1);
+                            starWeek.Value1 = valueArray.GetStringAt(0).Replace("\n", "");
+                            starWeek.Value2 = valueArray.GetStringAt(1).Replace("\n", "");
                         }
                     }
 
@@ -309,14 +312,7 @@ namespace HandyTools.Tuili
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="star"></param>
-        /// <param name="json"></param>
-        /// <param name="starDays"></param>
-        /// <param name="saveToDb"></param>
-        private void LoadDayAndTomorrowFromJson(Star star, string json, ObservableCollection<StarDay> starDays, bool today)
+        private  void LoadDayAndTomorrowFromJson(Star star, string json, ObservableCollection<StarDay> starDays, bool today)
         {
             JsonArray array = JsonArray.Parse(json);
             foreach (var item in array)
@@ -344,7 +340,7 @@ namespace HandyTools.Tuili
 
       
 
-        private void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
             var star = StarComboBox.SelectedItem as Star;
             if (star != null)
@@ -366,12 +362,12 @@ namespace HandyTools.Tuili
             SettingsPopup.IsOpen = true;
         }
 
-        private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var star = SettingsHelper.GetStar();
             if (star != null)
             {
-                LoadData();   
+                LoadData();
             }
         }
     }

@@ -24,6 +24,7 @@
         </Grid.RowDefinitions>
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="15,0">
+            
             <AutoSuggestBox TextChanged="AutoSuggestBox_OnTextChanged" Name="AutoSuggestBox" Header="{StaticResource TitleString}">
             </AutoSuggestBox>
             <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
