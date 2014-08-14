@@ -1,4 +1,7 @@
-﻿using Windows.UI;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using Windows.Data.Json;
+using Windows.UI;
 using Windows.UI.Popups;
 using HandyTools.Common;
 using System;
@@ -30,10 +33,13 @@ namespace HandyTools.Tuili
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-
+        public ObservableCollection<StarDay> StarDays { get; set; }
         public StarPage()
         {
+            StarDays = new ObservableCollection<StarDay>();
             this.InitializeComponent();
+
+            StarDayListView.DataContext = this;
 
             this.navigationHelper = new NavigationHelper(this);
             NavigationCacheMode = NavigationCacheMode.Required;
@@ -144,14 +150,44 @@ namespace HandyTools.Tuili
         private void StarPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             InitData();
-            var star = SettingsHelper.GetStar();
-            if(star != null)
-                LoadData(star);
+            LoadData();
         }
 
-        private async void LoadData(Star star)
+        private void LoadData()
         {
-            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
+            var star = SettingsHelper.GetStar();
+            if (star != null)
+                LoadStarDay(star);
+        }
+
+        private async void LoadStarDay(Star star)
+        {
+            try
+            {
+                string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
+                JsonArray array = JsonArray.Parse(json);
+                StarDays.Clear();
+                foreach (var item in array)
+                {
+                    StarDay starDay = new StarDay();
+                    if (item.ValueType == JsonValueType.Object)
+                    {
+                        if (item.Stringify().Contains("title"))
+                            starDay.Title = item.GetObject()["title"].GetString();
+                        if (item.Stringify().Contains("rank"))
+                            starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
+                        if (item.Stringify().Contains("value"))
+                            starDay.Value = item.GetObject()["value"].GetString();
+                    }
+
+                    if (!string.IsNullOrEmpty(starDay.Title))
+                        StarDays.Add(starDay);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         private void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
@@ -162,6 +198,7 @@ namespace HandyTools.Tuili
                 SettingsHelper.AddStar(star);
                 StarTextBlock.Text = star.ToString();
                 SettingsPopup.IsOpen = false;
+                LoadData();
             }
         }
 

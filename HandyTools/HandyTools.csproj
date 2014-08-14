@@ -82,6 +82,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="Control\RateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Haoma\ChangYongPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,6 +163,9 @@
     <Compile Include="Common\SettingsHelper.cs" />
     <Compile Include="Common\SqliteHelper.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Control\RateControl.xaml.cs">
+      <DependentUpon>RateControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Data\AppData.cs" />
     <Compile Include="Haoma\Changyong.cs" />
     <Compile Include="Haoma\ChangyongCategory.cs" />
@@ -213,11 +220,13 @@
       <DependentUpon>JieMeng.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tuili\Category.cs" />
+    <Compile Include="Tuili\StarDay.cs" />
     <Compile Include="Tuili\StarPage.xaml.cs">
       <DependentUpon>StarPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="Tuili\ValueVisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -233,6 +242,7 @@
     <Content Include="Assets\imgs\jixiong.png" />
     <Content Include="Assets\imgs\mobile.png" />
     <Content Include="Assets\imgs\phone.png" />
+    <Content Include="Assets\imgs\rate.png" />
     <Content Include="Assets\imgs\search.png" />
     <Content Include="Assets\imgs\star.png" />
     <Content Include="Assets\imgs\usercard.png" />
@@ -278,6 +288,7 @@
       <Name>SQLite for Windows Phone 8.1</Name>
     </SDKReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
