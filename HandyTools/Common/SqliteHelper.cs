@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using HandyTools.Shenfen;
 using HandyTools.Tuili;
@@ -18,10 +19,16 @@ namespace HandyTools.Common
 
         public static async void InitDb()
         {
-            StorageFile seedFile = await StorageFile.GetFileFromPathAsync(
-                Path.Combine(Windows.ApplicationModel.Package.Current.InstalledLocation.Path, DbName));
-            // copy the StorageFile to the ApplicationData folder
-            await seedFile.CopyAsync(ApplicationData.Current.LocalFolder, DbName, NameCollisionOption.ReplaceExisting);
+            try
+            {
+                StorageFile seedFile = await StorageFile.GetFileFromPathAsync(
+                    Path.Combine(Package.Current.InstalledLocation.Path, DbName));
+                // copy the StorageFile to the ApplicationData folder
+                await seedFile.CopyAsync(ApplicationData.Current.LocalFolder, DbName, NameCollisionOption.FailIfExists);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private static SQLiteAsyncConnection GetConnection()
@@ -38,6 +45,7 @@ namespace HandyTools.Common
             }
             return connection;
         }
+
 
         public static async Task<List<Category>> GetCategories()
         {
@@ -60,5 +68,25 @@ namespace HandyTools.Common
             return types;
         }
 
+        public static async Task<List<StarDay>> GetStarDays(string day, int starId)
+        {
+            List<StarDay> starDays = new List<StarDay>();
+            try
+            {
+                SQLiteAsyncConnection db = GetConnection();
+                starDays = await db.QueryAsync<StarDay>("select * from StarDay where Day = ? and StarId = ?", day, starId );
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return starDays;
+        }
+
+        public static async void SaveStarDay(StarDay star)
+        {
+            SQLiteAsyncConnection db = GetConnection();
+            await db.InsertAsync(star);
+        }
     }
 }

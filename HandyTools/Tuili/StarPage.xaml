@@ -12,6 +12,70 @@
 
     <Page.Resources>
         <tuili:ValueVisibilityConverter x:Key="VisibilityConverter"></tuili:ValueVisibilityConverter>
+
+        <DataTemplate x:Key="DayTomorrowDataTemplate">
+            <Grid Margin="0 0 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource GroupHeaderTextBlockStyle}" Text="{Binding Title}" />
+                <control:RateControl Grid.Row="0" Grid.Column="1" Rate="{Binding Rank}" Margin="0 5 0 0"></control:RateControl>
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 5 0 0" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Value}" Visibility="{Binding Value, Converter={StaticResource VisibilityConverter}}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="WeekDataTemplate">
+            <StackPanel Margin="0 0 0 10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource GroupHeaderTextBlockStyle}" Text="{Binding Title}" />
+                    <control:RateControl Grid.Row="0" Grid.Column="1" Rate="{Binding Rank}" Margin="0 5 0 0"></control:RateControl>
+                </Grid>
+                
+                <Grid Visibility="{Binding Value1, Converter={StaticResource VisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" Text="{Binding Title1}" />
+                    <control:RateControl Grid.Row="0" Grid.Column="1" Rate="{Binding Rank1}" Margin="0 5 0 0"></control:RateControl>
+                </Grid>
+                <TextBlock Margin="0 5 0 0" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Value1}" Visibility="{Binding Value1, Converter={StaticResource VisibilityConverter}}"/>
+
+                <Grid Visibility="{Binding Value2, Converter={StaticResource VisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}" Text="{Binding Title2}" />
+                    <control:RateControl Grid.Row="0" Grid.Column="1" Rate="{Binding Rank2}" Margin="0 5 0 0"></control:RateControl>
+                </Grid>
+                <TextBlock Margin="0 5 0 0" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Value2}" Visibility="{Binding Value2, Converter={StaticResource VisibilityConverter}}"/>
+                
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Value}"  Visibility="{Binding Value, Converter={StaticResource VisibilityConverter}}"/>
+            </StackPanel>
+        </DataTemplate>
+
     </Page.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -66,7 +130,7 @@
             <TextBlock Grid.Column="1" Foreground="DodgerBlue" HorizontalAlignment="Right" Margin="20 0" Style="{StaticResource BaseTextBlockStyle}" Name="StarTextBlock" Tapped="StarTextBlock_OnTapped">未设置</TextBlock>
         </Grid>
         <Grid x:Name="ContentRoot" Grid.Row="1">
-            <Pivot>
+            <Pivot Name="DataPivot" SelectionChanged="Pivot_OnSelectionChanged">
                 <Pivot.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -76,27 +140,17 @@
                 </Pivot.HeaderTemplate>
                 <PivotItem Header="每日星座运势">
                     <Grid>
-                        <ListView SelectionMode="None" Name="StarDayListView" ItemsSource="{Binding StarDays}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0 0 0 10">
-                                        <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="{Binding Title}" />
-                                        <control:RateControl Rate="{Binding Rank}" Margin="0 5 0 0"></control:RateControl>
-                                        <TextBlock Margin="0 5 0 0" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Value}" Visibility="{Binding Value, Converter={StaticResource VisibilityConverter}}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" Name="StarDayListView" ItemsSource="{Binding StarDays}"/>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="明日星座运势">
                     <Grid>
-                        <TextBlock>b</TextBlock>
+                        <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" Name="StarTomorrowListView" ItemsSource="{Binding StarDaysTomorrow}"/>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="每周星座运势">
                     <Grid>
-                        <TextBlock>c</TextBlock>
+                        <ListView SelectionMode="None" ItemTemplate="{StaticResource WeekDataTemplate}" Name="StarWeekListView" ItemsSource="{Binding StarDaysWeek}"/>
                     </Grid>
                 </PivotItem>
                 <PivotItem Header="每月星座运势"></PivotItem>

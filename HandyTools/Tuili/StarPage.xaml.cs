@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Windows.Data.Json;
+using Windows.Globalization;
 using Windows.UI;
 using Windows.UI.Popups;
 using HandyTools.Common;
@@ -23,6 +24,8 @@ using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 using HandyTools.Data;
+using Calendar = System.Globalization.Calendar;
+using DayOfWeek = Windows.Globalization.DayOfWeek;
 
 namespace HandyTools.Tuili
 {
@@ -34,21 +37,27 @@ namespace HandyTools.Tuili
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         public ObservableCollection<StarDay> StarDays { get; set; }
+        public ObservableCollection<StarDay> StarDaysTomorrow { get; set; }
+        public ObservableCollection<StarWeek> StarDaysWeek { get; set; } 
+
         public StarPage()
         {
             StarDays = new ObservableCollection<StarDay>();
+            StarDaysTomorrow = new ObservableCollection<StarDay>();
+            StarDaysWeek = new ObservableCollection<StarWeek>();
+
             this.InitializeComponent();
 
             StarDayListView.DataContext = this;
+            StarTomorrowListView.DataContext = this;
+            StarWeekListView.DataContext = this;
 
             this.navigationHelper = new NavigationHelper(this);
-            NavigationCacheMode = NavigationCacheMode.Required;
-
-
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
+        # region InitData
         private async void InitData()
         {
             SettinGrid.Width = Window.Current.CoreWindow.Bounds.Width;
@@ -113,7 +122,7 @@ namespace HandyTools.Tuili
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
-
+        #endregion
         #region NavigationHelper 注册
 
         /// <summary>
@@ -150,38 +159,42 @@ namespace HandyTools.Tuili
         private void StarPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             InitData();
-            LoadData();
+            //LoadData();
         }
 
         private void LoadData()
         {
             var star = SettingsHelper.GetStar();
-            if (star != null)
-                LoadStarDay(star);
+            switch (DataPivot.SelectedIndex)
+            {
+                case 0:
+                    LoadStarDay(star);
+                    break;
+                case 1:
+                    LoadStarTomorrow(star);
+                    break;
+                case 2:
+                    LoadStarWeek(star);
+                    break;
+            }    
         }
 
         private async void LoadStarDay(Star star)
         {
             try
             {
-                string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
-                JsonArray array = JsonArray.Parse(json);
                 StarDays.Clear();
-                foreach (var item in array)
+                List<StarDay> starDays = await SqliteHelper.GetStarDays(DateTime.Now.ToString("yyyy-MM-dd"), star.Id);
+                if (starDays.Count == 0)
                 {
-                    StarDay starDay = new StarDay();
-                    if (item.ValueType == JsonValueType.Object)
+                    LoadStarDayFromJson(star);
+                }
+                else
+                {
+                    foreach (var starDay in starDays)
                     {
-                        if (item.Stringify().Contains("title"))
-                            starDay.Title = item.GetObject()["title"].GetString();
-                        if (item.Stringify().Contains("rank"))
-                            starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
-                        if (item.Stringify().Contains("value"))
-                            starDay.Value = item.GetObject()["value"].GetString();
-                    }
-
-                    if (!string.IsNullOrEmpty(starDay.Title))
                         StarDays.Add(starDay);
+                    }
                 }
             }
             catch (Exception e)
@@ -189,6 +202,147 @@ namespace HandyTools.Tuili
                 Debug.WriteLine(e);
             }
         }
+
+        private async void LoadStarTomorrow(Star star)
+        {
+            try
+            {
+                StarDaysTomorrow.Clear();
+                List<StarDay> starDays = await SqliteHelper.GetStarDays(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), star.Id);
+                if (starDays.Count == 0)
+                {
+                    LoadStarTomorrowFromJson(star);
+                }
+                else
+                {
+                    foreach (var starDay in starDays)
+                    {
+                        StarDaysTomorrow.Add(starDay);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+        private void LoadStarWeek(Star star)
+        {
+            try
+            {
+                StarDaysWeek.Clear();
+                LoadStarWeekFromJson(star);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+
+
+        private async void LoadStarDayFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarDay, star.Id));
+            if (json != null)
+                LoadDayAndTomorrowFromJson(star, json, StarDays, true);
+        }
+
+        private async void LoadStarTomorrowFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarTomorrow, star.Id));
+            if (json != null)
+                LoadDayAndTomorrowFromJson(star, json, StarDaysTomorrow, false);
+        }
+        
+        private async void LoadStarWeekFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarWeek, star.Id));
+            if (json != null)
+            {
+                JsonArray array = JsonArray.Parse(json);
+                foreach (var item in array)
+                {
+                    StarWeek starWeek = new StarWeek();
+                    if (item.ValueType == JsonValueType.Object)
+                    {
+                        if (item.GetObject().ContainsKey("title"))
+                            starWeek.Title = item.GetObject()["title"].GetString();
+
+                        if (item.GetObject().ContainsKey("title2")) 
+                        {
+                            JsonArray titleArray = item.GetObject()["title2"].GetArray();
+                            starWeek.Title1 = titleArray.GetStringAt(0);
+                            starWeek.Title2 = titleArray.GetStringAt(1);
+                        }
+                        if (item.GetObject().ContainsKey("rank"))
+                        {
+                            if (item.GetObject()["rank"].ValueType == JsonValueType.Array)
+                            {
+                                JsonArray rankArray = item.GetObject()["rank"].GetArray();
+                                starWeek.Rank1 = (int) rankArray.GetNumberAt(0);
+                                starWeek.Rank2 = (int) rankArray.GetNumberAt(1);
+                            }
+                            else
+                            {
+                                starWeek.Rank = (int)item.GetObject()["rank"].GetNumber();
+                            }
+                        }
+                        if (item.GetObject().ContainsKey("value"))
+                            starWeek.Value = item.GetObject()["value"].GetString();
+
+                        if (item.GetObject().ContainsKey("value2"))
+                        {
+                            JsonArray valueArray = item.GetObject()["value2"].GetArray();
+                            starWeek.Value1 = valueArray.GetStringAt(0);
+                            starWeek.Value2 = valueArray.GetStringAt(1);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(starWeek.Title))
+                    {
+                        StarDaysWeek.Add(starWeek);
+                    }
+                }
+            }
+                
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="star"></param>
+        /// <param name="json"></param>
+        /// <param name="starDays"></param>
+        /// <param name="saveToDb"></param>
+        private void LoadDayAndTomorrowFromJson(Star star, string json, ObservableCollection<StarDay> starDays, bool today)
+        {
+            JsonArray array = JsonArray.Parse(json);
+            foreach (var item in array)
+            {
+                StarDay starDay = new StarDay();
+                if (item.ValueType == JsonValueType.Object)
+                {
+                    if (item.GetObject().ContainsKey("title"))
+                        starDay.Title = item.GetObject()["title"].GetString();
+                    if (item.GetObject().ContainsKey("rank"))
+                        starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
+                    if (item.GetObject().ContainsKey("value"))
+                        starDay.Value = item.GetObject()["value"].GetString();
+                }
+
+                if (!string.IsNullOrEmpty(starDay.Title))
+                {
+                    starDay.StarId = star.Id;
+                    starDay.Day = today ? DateTime.Now.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                    starDays.Add(starDay);
+                    SqliteHelper.SaveStarDay(starDay);
+                }
+            }
+        }
+
+      
 
         private void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
@@ -210,6 +364,15 @@ namespace HandyTools.Tuili
         private void StarTextBlock_OnTapped(object sender, TappedRoutedEventArgs e)
         {
             SettingsPopup.IsOpen = true;
+        }
+
+        private void Pivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var star = SettingsHelper.GetStar();
+            if (star != null)
+            {
+                LoadData();   
+            }
         }
     }
 }

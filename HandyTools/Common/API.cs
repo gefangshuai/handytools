@@ -14,6 +14,7 @@ namespace HandyTools.Common
         public static string ChangYongData = "http://git.oschina.net/gefangshuai/pushdata/raw/master/handytools/changyongdata.json";
         public static string ZipCode = "http://quhao.51240.com/{0}__quhao/";
         public static string StarDay = "http://api.uihoo.com/astro/astro.http.php?fun=day&id={0}&format=json";
-
+        public static string StarTomorrow = "http://api.uihoo.com/astro/astro.http.php?fun=tomorrow&id={0}&format=json";
+        public static string StarWeek = "http://api.uihoo.com/astro/astro.http.php?fun=week&id={0}&format=json";
     }
 }
