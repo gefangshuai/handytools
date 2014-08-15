@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
+using Windows.UI;
+using Windows.UI.Core;
+using Windows.UI.Notifications;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -34,6 +38,8 @@ namespace HandyTools.Shenfen
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         public LocalTime LocalTime { get; set; }
 
+        private DispatcherTimer dispatcherTimer;
+
         private DateTime _dateTime;
         private bool _loaded = false;
         public LocalTimePage()
@@ -51,8 +57,11 @@ namespace HandyTools.Shenfen
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = new TimeSpan(0,0,5);
+            dispatcherTimer.Tick += (sender, o) => SendToast();
 
-            this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 LoadLocalTime();
                 LoadNetTime();
@@ -140,10 +149,10 @@ namespace HandyTools.Shenfen
             {
                 _dateTime = await new NetTime().GetBeijingTime();
             }
-            LocalTime.Date = _dateTime.ToString("yyyy-MM-dd dddd");
 
             while (true)
             {
+                LocalTime.Date = _dateTime.ToString("yyyy-MM-dd dddd");
                 LocalTime.Time = _dateTime.ToString("T");
                 _dateTime = _dateTime.AddSeconds(1);
                 await Task.Delay(1000);
@@ -165,9 +174,50 @@ namespace HandyTools.Shenfen
 
         private void JiaozhunAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:"));
+            if (JiaozhunAppBarButton.IsChecked == true)
+            {
+                SettingStoryboardBegin.Begin();
+                //JiaozhunAppBarButton.IsChecked = false;
+                LayoutRoot.Background = new SolidColorBrush(Colors.Silver);
+            }
+            else
+            {
+                LayoutRoot.Background = new SolidColorBrush(Colors.White);
+                dispatcherTimer.Stop();
+                SettingStoryboardEnd.Begin();
+            }
         }
+
+        private void SendToast()
+        {
+            ToastTemplateType toastTemplate = ToastTemplateType.ToastImageAndText01;
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(toastTemplate);
+            XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
+            toastTextElements[0].AppendChild(toastXml.CreateTextNode(string.Format("当前时间: {0}", _dateTime.ToString("HH:mm:ss yyyy-MM-dd"))));
+
+            ToastNotification toast = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+        }
+
+
+        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            LayoutRoot.Background = new SolidColorBrush(Colors.White);
+            dispatcherTimer.Stop();
+            SettingStoryboardEnd.Begin();
+            JiaozhunAppBarButton.IsChecked = false;
+        }
+
+        private void OkButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            JiaozhunAppBarButton.IsChecked = true;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, (DataComboBox.SelectedIndex + 1) * 5);
+            dispatcherTimer.Start();
+        }
+
+       
     }
+
 
     public class LocalTime : INotifyPropertyChanged
     {

@@ -260,6 +260,8 @@
     <Content Include="Assets\icons\42500.png" />
     <Content Include="Assets\icons\42519.png" />
     <Content Include="Assets\icons\42521.png" />
+    <Content Include="Assets\icons\arrow.png" />
+    <Content Include="Assets\icons\star.png" />
     <Content Include="Assets\imgs\changtu.png" />
     <Content Include="Assets\imgs\chepai.png" />
     <Content Include="Assets\imgs\dream.png" />

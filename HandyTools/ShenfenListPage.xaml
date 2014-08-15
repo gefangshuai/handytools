@@ -35,7 +35,7 @@
                         <ColumnDefinition Width="70"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Margin="5" Source="Assets/imgs/usercard.png" Height="58" />
+                    <Image Margin="5" Source="Assets/imgs/time.png" Height="50" />
                     <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
                         <TextBlock FontSize="36">时间校对</TextBlock>
                         <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">提供标准的北京时间校对</TextBlock>

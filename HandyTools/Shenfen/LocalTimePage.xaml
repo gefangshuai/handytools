@@ -8,7 +8,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid x:Name="LayoutRoot">
+    <Page.Resources>
+        <Storyboard x:Name="SettingStoryboardBegin" TargetName="PlaneProjection" TargetProperty="LocalOffsetY">
+            <DoubleAnimation From="400" To="0" Duration="0:0:0.5"/>
+        </Storyboard>
+
+        <Storyboard x:Name="SettingStoryboardEnd" TargetName="PlaneProjection" TargetProperty="LocalOffsetY">
+            <DoubleAnimation From="0" To="400" Duration="0:0:0.5"/>
+        </Storyboard>
+    </Page.Resources>
+    
+    <Grid IsTapEnabled="True" x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -46,11 +56,70 @@
                 <TextBlock Margin="10 0 0 0" Name="LocalBlock" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Local}" />
             </StackPanel>
         </Grid>
+
+        <Border Grid.Row="1" Height="400" BorderThickness="0 4 0 0" VerticalAlignment="Bottom" Background="White">
+            <Border.Projection>
+                <PlaneProjection LocalOffsetY="400" x:Name="PlaneProjection"/>
+            </Border.Projection>
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="WhiteSmoke" Offset="0.93"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+
+            <Grid Margin="20 20 20 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.ColumnSpan="2">
+                    <TextBlock Style="{StaticResource BaseTextBlockStyle}">请设置通知的时间间隔(默认5秒钟):</TextBlock>
+                    <ComboBox Name="DataComboBox">
+                        <ComboBoxItem Tag="5" IsSelected="True">5秒钟</ComboBoxItem>
+                        <ComboBoxItem Tag="10">10秒钟</ComboBoxItem>
+                        <ComboBoxItem Tag="15">15秒钟</ComboBoxItem>
+                        <ComboBoxItem Tag="20">20秒钟</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}">说明：</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource ControlContextualInfoTextBlockStyle}">
+                            点击确定后，请点击
+                        </TextBlock>
+                        <Image Margin="5 0" Source="../Assets/icons/star.png"/>
+                        <TextBlock Style="{StaticResource ControlContextualInfoTextBlockStyle}">
+                            将本程序切换到后台
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock Foreground="IndianRed" Style="{StaticResource ControlContextualInfoTextBlockStyle}">
+                        不要退出程序!
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Style="{StaticResource ControlContextualInfoTextBlockStyle}">
+                        程序会以Toast通知的方式，根据您设置的时间间隔提醒当前的北京时间。
+                    </TextBlock>
+                    <TextBlock Foreground="CornflowerBlue" TextWrapping="Wrap" Style="{StaticResource ControlContextualInfoTextBlockStyle}">
+                        windows phone系统限制，无法做到一步到位，请小伙伴谅解！
+                    </TextBlock>
+                </StackPanel>
+                <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0 0 5 0" Name="OkButton" Click="OkButton_OnClick">开始</Button>
+                <Button Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="5 0 0 0" Name="CancelButton" Click="CancelButton_OnClick">取消</Button>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Foreground="red" Margin="0 0 0 20">
+                    如需取消Toast通知，再次点它！
+                </TextBlock>
+                <Image Grid.Column="0"  Grid.ColumnSpan="2" HorizontalAlignment="Center" Stretch="Fill" Margin="50 5 0 0" Grid.Row="2" Height="30" Width="70" Source="../Assets/icons/arrow.png"></Image>
+            </Grid>
+        </Border>
     </Grid>
+
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="刷新" Icon="Refresh" Name="RefreshAppBarButton" Click="RefreshAppBarButton_OnClick" />
-            <AppBarButton Label="校准" Icon="TouchPointer" Name="JiaozhunAppBarButton" Click="JiaozhunAppBarButton_OnClick"/>
+            <AppBarToggleButton Label="校准" Icon="TouchPointer" Name="JiaozhunAppBarButton" Click="JiaozhunAppBarButton_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
