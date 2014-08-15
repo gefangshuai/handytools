@@ -38,7 +38,11 @@ namespace HandyTools.Shenfen
         private bool _loaded = false;
         public LocalTimePage()
         {
-            LocalTime = new LocalTime();
+            LocalTime = new LocalTime()
+            {
+                Time = "正在获取...",
+                Date = "正在获取..."
+            };
             this.InitializeComponent();
             ContentRoot.DataContext = LocalTime;
 
@@ -157,6 +161,11 @@ namespace HandyTools.Shenfen
         private void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void JiaozhunAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:"));
         }
     }
 

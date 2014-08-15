@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,25 +24,17 @@ namespace HandyTools.Shenfen
             try
             {
                 HttpClient httpClient = new HttpClient();
-                string html = await httpClient.GetStringAsync("http://www.beijing-time.org/time.asp");
-                string[] tempArray = html.Split(';');
-                for (int i = 0; i < tempArray.Length; i++)
-                {
-                    tempArray[i] = tempArray[i].Replace("\r\n", "");
-                }
-
-                string year = tempArray[1].Split('=')[1];
-                string month = tempArray[2].Split('=')[1];
-                string day = tempArray[3].Split('=')[1];
-                string hour = tempArray[5].Split('=')[1];
-                string minite = tempArray[6].Split('=')[1];
-                string second = tempArray[7].Split('=')[1];
-
-                dt = DateTime.Parse(year + "-" + month + "-" + day + " " + hour + ":" + minite + ":" + second);
+                byte[] result =
+                    await httpClient.GetByteArrayAsync("http://www.sogou.com/websearch/features/standardtimeadjust.jsp");
+                long times = long.Parse(System.Text.Encoding.UTF8.GetString(result, 0, result.Length).Replace("\r", "").Replace("\n", "").Replace("standardtime(", "").Replace(",0);", ""));
+                DateTime dt1970 = new DateTime(1970, 1, 1, 0, 0, 0); 
+                long tricks1970 = dt1970.Ticks;//1970年1月1日刻度         
+                long timeTricks = tricks1970 + times * 10000;//日志日期刻度         
+                dt = new DateTime(timeTricks).AddHours(8);//转化为DateTime
             }
             catch (Exception e)
             {
-                new MessageDialog(e.Message, "提示").ShowAsync();
+                new MessageDialog("获取失败，请刷新重试！", "提示").ShowAsync();
             }
            
             return dt;

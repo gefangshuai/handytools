@@ -35,13 +35,14 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="100"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Name="TimeBlock" HorizontalAlignment="Center" FontWeight="Light" FontSize="72" Grid.Row="2" FontFamily="Segoe WP" Text="{Binding Time}"/>
             <TextBlock Name="DateBlock" HorizontalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="DarkRed" Grid.Row="3" Text="{Binding Date}"/>
             <StackPanel Margin="0 20 0 0" Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="4" >
-                <TextBlock Style="{StaticResource BodyTextBlockStyle}">您本地的时间: </TextBlock>
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}">您本地的时间:</TextBlock>
                 <TextBlock Margin="10 0 0 0" Name="LocalBlock" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Local}" />
             </StackPanel>
         </Grid>
@@ -49,6 +50,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="刷新" Icon="Refresh" Name="RefreshAppBarButton" Click="RefreshAppBarButton_OnClick" />
+            <AppBarButton Label="校准" Icon="TouchPointer" Name="JiaozhunAppBarButton" Click="JiaozhunAppBarButton_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
