@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="HandyTools.Shenfen.LocalTimePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools.Shenfen"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="15 0">
+            <TextBlock Text="时间校对" Style="{ThemeResource ControlContextualInfoTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="当前时间" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: 应将内容放入以下网格-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15" DataContext="{Binding LocalTime}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="TimeBlock" HorizontalAlignment="Center" FontWeight="Light" FontSize="72" Grid.Row="2" FontFamily="Segoe WP" Text="{Binding Time}"/>
+            <TextBlock Name="DateBlock" HorizontalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Foreground="DarkRed" Grid.Row="3" Text="{Binding Date}"/>
+            <StackPanel Margin="0 20 0 0" Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="4" >
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}">您本地的时间: </TextBlock>
+                <TextBlock Margin="10 0 0 0" Name="LocalBlock" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Local}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="刷新" Icon="Refresh" Name="RefreshAppBarButton" Click="RefreshAppBarButton_OnClick" />
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

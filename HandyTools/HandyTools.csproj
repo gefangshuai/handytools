@@ -83,6 +83,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="BasicPage1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Control\RateControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -92,6 +96,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Haoma\GuishudiPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shenfen\LocalTimePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,6 +160,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BasicPage1.xaml.cs">
+      <DependentUpon>BasicPage1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\API.cs" />
     <Compile Include="Common\FileHelper.cs" />
     <Compile Include="Common\Gb2312Encoding.cs" />
@@ -177,6 +188,10 @@
     <Compile Include="Haoma\GuishudiPage.xaml.cs">
       <DependentUpon>GuishudiPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shenfen\LocalTimePage.xaml.cs">
+      <DependentUpon>LocalTimePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shenfen\NetTime.cs" />
     <Compile Include="Tuili\JiXiong.cs" />
     <Compile Include="Tuili\JixiongPage.xaml.cs">
       <DependentUpon>JixiongPage.xaml</DependentUpon>
@@ -238,6 +253,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\background.jpg" />
+    <Content Include="Assets\icons\42465.png" />
+    <Content Include="Assets\icons\42479.png" />
+    <Content Include="Assets\icons\42481.png" />
+    <Content Include="Assets\icons\42494.png" />
+    <Content Include="Assets\icons\42500.png" />
+    <Content Include="Assets\icons\42519.png" />
+    <Content Include="Assets\icons\42521.png" />
     <Content Include="Assets\imgs\changtu.png" />
     <Content Include="Assets\imgs\chepai.png" />
     <Content Include="Assets\imgs\dream.png" />
@@ -248,6 +270,7 @@
     <Content Include="Assets\imgs\rate.png" />
     <Content Include="Assets\imgs\search.png" />
     <Content Include="Assets\imgs\star.png" />
+    <Content Include="Assets\imgs\time.png" />
     <Content Include="Assets\imgs\usercard.png" />
     <Content Include="Assets\imgs\voice.gif" />
     <Content Include="Assets\imgs\zipcode.png" />

@@ -1,4 +1,7 @@
-﻿using HandyTools.Common;
+﻿using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,28 +18,41 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.ComponentModel;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Shenfen;
-using HandyTools.Tuili;
+using HandyTools.Data;
 
-namespace HandyTools
+namespace HandyTools.Shenfen
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ShenfenListPage : Page
+    public sealed partial class LocalTimePage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        public LocalTime LocalTime { get; set; }
 
-        public ShenfenListPage()
+        private DateTime _dateTime;
+        private bool _loaded = false;
+        public LocalTimePage()
         {
+            LocalTime = new LocalTime();
             this.InitializeComponent();
+            ContentRoot.DataContext = LocalTime;
 
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+
+
+            this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                LoadLocalTime();
+                LoadNetTime();
+            });
         }
 
         /// <summary>
@@ -98,11 +114,39 @@ namespace HandyTools
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            
+            
         }
 
+        private async void LoadLocalTime()
+        {
+            while (true)
+            {
+                LocalTime.Local = DateTime.Now.ToString("HH:mm:ss yyyy-MM-dd dddd");
+                await Task.Delay(1000);
+            }
+        }
+
+        private async void LoadNetTime()
+        {
+            if (!_loaded)
+            {
+                _dateTime = await new NetTime().GetBeijingTime();
+            }
+            LocalTime.Date = _dateTime.ToString("yyyy-MM-dd dddd");
+
+            while (true)
+            {
+                LocalTime.Time = _dateTime.ToString("T");
+                _dateTime = _dateTime.AddSeconds(1);
+                await Task.Delay(1000);
+            }
+        }
+
+      
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
@@ -110,19 +154,60 @@ namespace HandyTools
 
         #endregion
 
-        private void ShenfenListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            switch (ShenfenListView.SelectedIndex)
+            
+        }
+    }
+
+    public class LocalTime : INotifyPropertyChanged
+    {
+        private string _time;
+        private string _date;
+        private string _local;
+
+        public string Time
+        {
+            get { return _time; }
+            set
             {
-                case 0:
-                    App.MainPage.Frame.Navigate(typeof(ShenfenPage));
-                    break;
-                case 1:
-                    App.MainPage.Frame.Navigate(typeof(LocalTimePage));
-                    break;
-               
+                _time = value;
+                NotifyPropertyChanged("Time");
+                
             }
-            ShenfenListView.SelectedItem = null;
+        }
+
+        public string Date
+        {
+            get { return _date; }
+            set
+            {
+                _date = value;
+                NotifyPropertyChanged("Date");
+                
+            }
+        }
+
+        public string Local
+        {
+            get { return _local; }
+            set
+            {
+                _local = value;
+                NotifyPropertyChanged("Local");
+
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this,
+                    new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

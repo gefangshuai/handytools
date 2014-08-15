@@ -88,5 +88,11 @@ namespace HandyTools.Common
             SQLiteAsyncConnection db = GetConnection();
             await db.InsertAsync(star);
         }
+
+        internal static async Task ClearStarDay()
+        {
+            SQLiteAsyncConnection db = GetConnection();
+            await db.ExecuteScalarAsync<StarDay>("delete from StarDay");
+        }
     }
 }

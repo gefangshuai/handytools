@@ -29,7 +29,19 @@
                     </StackPanel>
                 </Grid>
             </ListViewItem>
-
+            <ListViewItem>
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Margin="5" Source="Assets/imgs/usercard.png" Height="58" />
+                    <StackPanel Grid.Column="1" Style="{StaticResource ListViewStyle}">
+                        <TextBlock FontSize="36">时间校对</TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">提供标准的北京时间校对</TextBlock>
+                    </StackPanel>
+                </Grid>
+            </ListViewItem>
         </ListView>
 
     </Grid>

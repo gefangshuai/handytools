@@ -370,5 +370,18 @@ namespace HandyTools.Tuili
                 LoadData();
             }
         }
+
+        private void ClearAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageDialog tipDialog = new MessageDialog("确定要删除缓存的星座数据吗?","提示");
+            tipDialog.Commands.Add(new UICommand("删除", async command =>
+            {
+                await SqliteHelper.ClearStarDay();
+                MessageDialog dialog = new MessageDialog("缓存数据已删除！", "提示");
+                dialog.ShowAsync();
+            }));
+            tipDialog.Commands.Add(new UICommand("取消"));
+            tipDialog.ShowAsync();
+        }
     }
 }

@@ -43,6 +43,22 @@ namespace HandyTools.Common
                 dialog.ShowAsync();
             }
             return null;
-        } 
+        }
+        public async static Task<string> GetNew(string url, params object[] par)
+        {
+            try
+            {
+
+                return await new HttpClient().GetStringAsync(new Uri(string.Format(url, par)));
+            }
+            catch (Exception e)
+            {
+
+                MessageDialog dialog = new MessageDialog(e.Message);
+                dialog.ShowAsync();
+            }
+            return null;
+        }
+
     }
 }

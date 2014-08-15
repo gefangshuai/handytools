@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Store;
+using Windows.System;
 using Windows.UI;
 using HandyTools.Common;
 using System;
@@ -116,5 +119,10 @@ namespace HandyTools
 
         #endregion
 
+
+        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(new Uri("ms-windows-store:reviewapp?appid=" + CurrentApp.AppId));
+        }
     }
 }

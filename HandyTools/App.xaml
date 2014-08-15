@@ -45,7 +45,7 @@
         
         <DataTemplate x:Key="HubSectionDataTemplate">
             <Grid Margin="0 20 0 0">
-                <TextBlock Text="{Binding}" FontSize="48" FontFamily="Segoe WP Light" FontWeight="Light"></TextBlock>
+                <TextBlock Text="{Binding}" FontSize="28" FontFamily="Segoe WP Light" FontWeight="Light"></TextBlock>
             </Grid>
         </DataTemplate>
         <Style x:Key="ListViewStyle" TargetType="StackPanel">

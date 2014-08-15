@@ -96,6 +96,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton x:Name="SettingAppBarButton" Click="SettingAppBarButton_OnClick" Label="资料设置" Icon="Contact" />
+            <AppBarButton x:Name="ClearAppBarButton" Click="ClearAppBarButton_OnClick" Label="删除缓存" Icon="Delete" />
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -158,8 +159,8 @@
             <TextBlock Margin="20 0" Style="{StaticResource BaseTextBlockStyle}" >
 				<Run Text="星座运势"/>
             </TextBlock>
-            <TextBlock Grid.Column="1" IsTapEnabled="True" Foreground="DodgerBlue" HorizontalAlignment="Right" Margin="20 0" Style="{StaticResource BaseTextBlockStyle}" x:Name="StarTextBlock" Tapped="StarTextBlock_OnTapped">
-				<Run Text="未设置"/>
+            <TextBlock Text="未设置" Grid.Column="1" IsTapEnabled="True" Foreground="DodgerBlue" HorizontalAlignment="Right" Margin="20 0" Style="{StaticResource BaseTextBlockStyle}" x:Name="StarTextBlock" Tapped="StarTextBlock_OnTapped">
+				
             </TextBlock>
         </Grid>
         <Grid x:Name="ContentRoot" Grid.Row="1">

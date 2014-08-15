@@ -6,8 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    >
+    <Page.Background>
+        <SolidColorBrush Color="WhiteSmoke"></SolidColorBrush>
+    </Page.Background>
+    <Page.Resources>
+        <SolidColorBrush x:Key="BackgroundBrush" Color="WhiteSmoke"></SolidColorBrush>
+    </Page.Resources>
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -24,7 +29,7 @@
                 <DataTemplate>
                     <Border BorderThickness="0 0 0 5">
                         <StackPanel Margin="0 10 0 0">
-                            <TextBlock Text="{Binding}" FontSize="62"></TextBlock>
+                            <TextBlock Foreground="DodgerBlue" Text="{Binding}" FontSize="62"></TextBlock>
                             <TextBlock Style="{StaticResource ListViewItemContentTextBlockStyle}">您的生活小助手!</TextBlock>
                         </StackPanel>
                     </Border>
@@ -32,26 +37,27 @@
             </Hub.HeaderTemplate>
             <HubSection Header="号码查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
                 <DataTemplate>
-                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:HaomaListPage"></Frame>
+                    <Frame Background="{StaticResource BackgroundBrush}" SourcePageType="local:HaomaListPage"></Frame>
                 </DataTemplate>
             </HubSection>
 
             <HubSection Header="运程推理" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
                 <DataTemplate>
-                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:TuiliPage"></Frame>
+                    <Frame Background="{StaticResource BackgroundBrush}" SourcePageType="local:TuiliPage"></Frame>
                 </DataTemplate>
             </HubSection>
 
-            <HubSection Header="其它查询" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
+            <HubSection Header="其它" HeaderTemplate="{StaticResource HubSectionDataTemplate}">
                 <DataTemplate>
-                    <Frame Background="{StaticResource ApplicationPageBackgroundThemeBrush}" SourcePageType="local:ShenfenListPage"></Frame>
+                    <Frame Background="{StaticResource BackgroundBrush}" SourcePageType="local:ShenfenListPage"></Frame>
                 </DataTemplate>
             </HubSection>
-
         </Hub>
-
     </Grid>
     <Page.BottomAppBar>
-        <CommandBar></CommandBar>
+        <CommandBar>
+            <AppBarButton Label="设置" Icon="Setting"></AppBarButton>
+            <AppBarButton Label="狂点我" Icon="TouchPointer" Click="ButtonBase_OnClick"/>
+        </CommandBar>
     </Page.BottomAppBar>
 </Page>
