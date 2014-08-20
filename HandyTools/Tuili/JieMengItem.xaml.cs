@@ -96,7 +96,6 @@ namespace HandyTools.Tuili
         {
             this.navigationHelper.OnNavigatedTo(e);
 
-            Debug.WriteLine("---go in jiemeng items page---");
             Category category = e.Parameter as Category;
             if (category != null)
             {

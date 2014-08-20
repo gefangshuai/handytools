@@ -33,12 +33,14 @@ namespace HandyTools.Tuili
 
         private NavigationHelper navigationHelper;
         public ObservableCollection<Category> Categories { get; set; }
-
+        public ObservableCollection<Item> Items { get; set; }
         public JieMengPage()
         {
             Categories = new ObservableCollection<Category>();
+            Items = new ObservableCollection<Item>();
             this.InitializeComponent();
             DataListView.DataContext = this;
+            ItemListView.DataContext = this;
 
             NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
@@ -99,6 +101,8 @@ namespace HandyTools.Tuili
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+
+            
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -124,7 +128,19 @@ namespace HandyTools.Tuili
             {
                 Categories.Add(category);
             }
+
+            LoadItems(AppData.Items);
+
             ProgressPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void LoadItems(IEnumerable<Item> items)
+        {
+            Items.Clear();
+            foreach (var item in items)
+            {
+                Items.Add(item);
+            }
         }
 
         private void DataListView_OnItemClick(object sender, ItemClickEventArgs e)
@@ -144,6 +160,20 @@ namespace HandyTools.Tuili
         {
             PivotItem1.Header = "目录";
             PivotItem2.Header = "搜索";
+        }
+
+        private void ItemListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
+
+        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var items = from n in AppData.Items
+                where n.Content.Contains(SearchTextBox.Text) || n.Title.Contains(SearchTextBox.Text)
+                select n;
+
+            LoadItems(items);
         }
     }
 }

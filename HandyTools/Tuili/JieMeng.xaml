@@ -49,21 +49,28 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderThickness="2" BorderBrush="Gray">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox Margin="5" BorderThickness="0" 
-                                         PlaceholderText="输入关键字进行查询" 
-                                         Name="SearchTextBox"
-                                         VerticalAlignment="Center"
-                                         LostFocus="SearchTextBox_OnLostFocus"
-                                         GotFocus="SearchTextBox_OnGotFocus"/>
-                                <Image Source="../Assets/imgs/search.png" Margin="5" Grid.Column="1" Name="SearchImage" ></Image>
-                            </Grid>
-                        </Border>
+                        <TextBox Name="SearchTextBox"
+                            PlaceholderText="输入关键字进行查询" 
+                            LostFocus="SearchTextBox_OnLostFocus"
+                            TextChanged="TextBox_OnTextChanged"
+                            GotFocus="SearchTextBox_OnGotFocus"></TextBox>
+
+                        <ListView Grid.Row="1"  Name="ItemListView" ItemsSource="{Binding Items}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ItemListView_OnItemClick">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0 0 0 10" BorderThickness="0 0 0 1" BorderBrush="DimGray">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0">
+                                                <TextBlock Text="梦见"  FontWeight="Bold" FontSize="24" Margin="0 0 5 0" Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
+                                                <TextBlock FontWeight="Bold" Text="{Binding Title}" FontSize="24"  Style="{StaticResource ListViewItemTextBlockStyle}"></TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Margin="0 0 0 5" Text="{Binding Content}" Style="{StaticResource BodyTextBlockStyle}" MaxLines="4"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
                     </Grid>
                 </PivotItem>
             </Pivot>
