@@ -38,7 +38,6 @@ namespace HandyTools.Shenfen
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         public LocalTime LocalTime { get; set; }
 
-        private DispatcherTimer dispatcherTimer;
 
         private DateTime _dateTime;
         private bool _loaded = false;
@@ -56,10 +55,6 @@ namespace HandyTools.Shenfen
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Interval = new TimeSpan(0,0,5);
-            dispatcherTimer.Tick += (sender, o) => SendToast();
 
             this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
@@ -167,55 +162,15 @@ namespace HandyTools.Shenfen
 
         #endregion
 
-        private void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void RefreshAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            
-        }
-
-        private void JiaozhunAppBarButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (JiaozhunAppBarButton.IsChecked == true)
-            {
-                SettingStoryboardBegin.Begin();
-                //JiaozhunAppBarButton.IsChecked = false;
-                LayoutRoot.Background = new SolidColorBrush(Colors.Silver);
-            }
-            else
-            {
-                LayoutRoot.Background = new SolidColorBrush(Colors.White);
-                dispatcherTimer.Stop();
-                SettingStoryboardEnd.Begin();
-            }
-        }
-
-        private void SendToast()
-        {
-            ToastTemplateType toastTemplate = ToastTemplateType.ToastImageAndText01;
-            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(toastTemplate);
-            XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
-            toastTextElements[0].AppendChild(toastXml.CreateTextNode(string.Format("当前时间: {0}", _dateTime.ToString("HH:mm:ss yyyy-MM-dd"))));
-
-            ToastNotification toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier().Show(toast);
+            LocalTime.Time = "正在获取...";
+            LocalTime.Date = "正在获取...";
+            _dateTime = await new NetTime().GetBeijingTime();
         }
 
 
-        private void CancelButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            LayoutRoot.Background = new SolidColorBrush(Colors.White);
-            dispatcherTimer.Stop();
-            SettingStoryboardEnd.Begin();
-            JiaozhunAppBarButton.IsChecked = false;
-        }
 
-        private void OkButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            JiaozhunAppBarButton.IsChecked = true;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, (DataComboBox.SelectedIndex + 1) * 5);
-            dispatcherTimer.Start();
-        }
-
-       
     }
 
 

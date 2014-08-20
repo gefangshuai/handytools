@@ -211,10 +211,7 @@ namespace HandyTools.Haoma
                     var dialog = new MessageDialog("发现新数据，是否更新?", "提示");
                     dialog.Commands.Add(new UICommand("更新", async (action) =>
                     {
-                        var data = await DownloadData();
-                        await FileHelper.WriteChangyongDataToLocalFile(data);
-                        new MessageDialog("更新成功!", "提示").ShowAsync();
-                        LoadData();
+                        await UpdateData();
                     }));
                     dialog.Commands.Add(new UICommand("不更新", (action) =>
                     {
@@ -227,6 +224,19 @@ namespace HandyTools.Haoma
                     new MessageDialog("无更新", "提示").ShowAsync();
                 }
             }
+        }
+
+        private async Task UpdateData()
+        {
+            var data = await DownloadData();
+            await FileHelper.WriteChangyongDataToLocalFile(data);
+            new MessageDialog("更新成功!", "提示").ShowAsync();
+            LoadData();
+        }
+
+        private async void ForceAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            await UpdateData();
         }
     }
 }

@@ -25,8 +25,8 @@
 
         <!--TODO: 应将内容放入以下网格-->
         <Grid x:Name="ContentRoot">
-            <Pivot Title="周公解梦">
-                <PivotItem Header="目录">
+            <Pivot Title="周公解梦" Name="DataPivot">
+                <PivotItem Header="目录" Name="PivotItem1">
                     <ListView ItemsSource="{Binding Categories}" Name="DataListView"  SelectionMode="None" IsItemClickEnabled="True" ItemClick="DataListView_OnItemClick">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -38,8 +38,33 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </PivotItem>
-                <PivotItem Header="收藏">
-                    
+                <PivotItem Header="搜索" Name="PivotItem2">
+                    <PivotItem.Transitions>
+                        <TransitionCollection>
+                            <AddDeleteThemeTransition/>
+                        </TransitionCollection>
+                    </PivotItem.Transitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" BorderThickness="2" BorderBrush="Gray">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Margin="5" BorderThickness="0" 
+                                         PlaceholderText="输入关键字进行查询" 
+                                         Name="SearchTextBox"
+                                         VerticalAlignment="Center"
+                                         LostFocus="SearchTextBox_OnLostFocus"
+                                         GotFocus="SearchTextBox_OnGotFocus"/>
+                                <Image Source="../Assets/imgs/search.png" Margin="5" Grid.Column="1" Name="SearchImage" ></Image>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </PivotItem>
             </Pivot>
         </Grid>

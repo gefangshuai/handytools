@@ -66,6 +66,7 @@
             <AppBarButton Name="SearchAppBarButton" Label="查询" Icon="Find" Click="SearchAppBarButton_OnClick"></AppBarButton>
             <AppBarButton Name="UpdateAppBarButton" Label="检查更新" Icon="Sync" Click="UpdateAppBarButton_OnClick"/>
             <AppBarButton Name="BaoAppBarButton" Label="上报新号码" Click="BaoAppBarButton_OnClick" Icon="Orientation"/>
+            <AppBarButton Name="ForceAppBarButton" Label="强制更新" Click="ForceAppBarButton_OnClick" Icon="SaveLocal"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

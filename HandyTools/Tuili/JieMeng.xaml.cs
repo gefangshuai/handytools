@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Windows.Phone.UI.Input;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace HandyTools.Tuili
     /// </summary>
     public sealed partial class JieMengPage : Page
     {
+
         private NavigationHelper navigationHelper;
         public ObservableCollection<Category> Categories { get; set; }
 
@@ -94,7 +96,7 @@ namespace HandyTools.Tuili
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
         }
@@ -129,6 +131,19 @@ namespace HandyTools.Tuili
         {
             var item = e.ClickedItem;
             Frame.Navigate(typeof(JieMengItem), item);
+        }
+
+     
+        private void SearchTextBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            PivotItem1.Header = "";
+            PivotItem2.Header = "";
+        }
+
+        private void SearchTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            PivotItem1.Header = "目录";
+            PivotItem2.Header = "搜索";
         }
     }
 }
