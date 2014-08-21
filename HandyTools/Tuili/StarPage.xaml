@@ -199,7 +199,9 @@
                 <PivotItem Header="年度星座运势">
                     <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" x:Name="StarYearListView" ItemsSource="{Binding StarDaysYear}"/>
                 </PivotItem>
-                <PivotItem Header="年度爱情运势"/>
+                <PivotItem Header="年度爱情运势">
+                    <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" x:Name="StarAQListView" ItemsSource="{Binding StarDaysAQ}"/>
+                </PivotItem>
             </Pivot>
 
         </Grid>

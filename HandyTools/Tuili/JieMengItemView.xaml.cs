@@ -1,4 +1,6 @@
-﻿using HandyTools.Common;
+﻿using Windows.ApplicationModel.DataTransfer;
+using Windows.UI.Popups;
+using HandyTools.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -109,5 +111,7 @@ namespace HandyTools.Tuili
         }
 
         #endregion
+
+       
     }
 }

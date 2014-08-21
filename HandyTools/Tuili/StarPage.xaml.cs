@@ -41,7 +41,8 @@ namespace HandyTools.Tuili
         public ObservableCollection<StarDay> StarDaysTomorrow { get; set; }
         public ObservableCollection<StarWeek> StarDaysWeek { get; set; }
         public ObservableCollection<StarDay> StarDaysMonth { get; set; }
-        public ObservableCollection<StarDay> StarDaysYear { get; set; } 
+        public ObservableCollection<StarDay> StarDaysYear { get; set; }
+        public ObservableCollection<StarDay> StarDaysAQ { get; set; } 
 
         public StarPage()
         {
@@ -50,6 +51,7 @@ namespace HandyTools.Tuili
             StarDaysWeek = new ObservableCollection<StarWeek>();
             StarDaysMonth = new ObservableCollection<StarDay>();
             StarDaysYear = new ObservableCollection<StarDay>();
+            StarDaysAQ = new ObservableCollection<StarDay>();
 
             this.InitializeComponent();
 
@@ -58,8 +60,10 @@ namespace HandyTools.Tuili
             StarWeekListView.DataContext = this;
             StarMonthListView.DataContext = this;
             StarYearListView.DataContext = this;
+            StarAQListView.DataContext = this;
 
             this.navigationHelper = new NavigationHelper(this);
+            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -190,6 +194,9 @@ namespace HandyTools.Tuili
                 case 4:
                     await LoadStarYear(star);
                     break;
+                case 5:
+                    await LoadStarAQ(star);
+                    break;
             }
             ProgressPanel.Visibility = Visibility.Collapsed;
         }
@@ -273,6 +280,18 @@ namespace HandyTools.Tuili
             {
                 StarDaysYear.Clear();
                 await LoadStarYearFromJson(star);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+        private async Task LoadStarAQ(Star star)
+        {
+            try
+            {
+                StarDaysAQ.Clear();
+                await LoadStarAQFromJson(star);
             }
             catch (Exception e)
             {
@@ -393,6 +412,29 @@ namespace HandyTools.Tuili
             }
 
         }
+        private async Task LoadStarAQFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarAQ, star.Id));
+            if (json != null)
+            {
+                JsonArray array = JsonArray.Parse(json);
+                foreach (var item in array)
+                {
+                    StarDay starDay = new StarDay();
+                    if (item.ValueType == JsonValueType.Object)
+                    {
+                        if (item.GetObject().ContainsKey("title"))
+                            starDay.Title = item.GetObject()["title"].GetString();
+                        if (item.GetObject().ContainsKey("rank"))
+                            starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
+                        if (item.GetObject().ContainsKey("value"))
+                            starDay.Value = item.GetObject()["value"].GetString();
+                    }
+                    StarDaysAQ.Add(starDay);
+                }
+            }
+
+        }
 
         private  void LoadDayAndTomorrowFromJson(Star star, string json, ObservableCollection<StarDay> starDays, bool today)
         {
@@ -422,7 +464,7 @@ namespace HandyTools.Tuili
 
       
 
-        private async void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private void OkAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
             var star = StarComboBox.SelectedItem as Star;
             if (star != null)

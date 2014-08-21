@@ -34,8 +34,9 @@
         <!--TODO: 应将内容放入以下网格-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding Content, Converter={StaticResource ItemContentConvert}}" Style="{StaticResource BodyTextBlockStyle}" />
+                <TextBlock Name="ItemTextBlock" Text="{Binding Content, Converter={StaticResource ItemContentConvert}}" Style="{StaticResource BodyTextBlockStyle}" />
             </ScrollViewer>
         </Grid>
     </Grid>
+    
 </Page>
