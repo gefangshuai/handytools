@@ -16,7 +16,7 @@
         <DataTemplate x:Key="DayTomorrowDataTemplate">
             <Grid Margin="0 0 0 10">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="125"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -191,8 +191,14 @@
                         <ListView SelectionMode="None" ItemTemplate="{StaticResource WeekDataTemplate}" x:Name="StarWeekListView" ItemsSource="{Binding StarDaysWeek}"/>
                     </Grid>
                 </PivotItem>
-                <PivotItem Header="每月星座运势"/>
-                <PivotItem Header="年度星座运势"/>
+                <PivotItem Header="每月星座运势">
+                    <Grid>
+                        <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" x:Name="StarMonthListView" ItemsSource="{Binding StarDaysMonth}"/>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Header="年度星座运势">
+                    <ListView SelectionMode="None" ItemTemplate="{StaticResource DayTomorrowDataTemplate}" x:Name="StarYearListView" ItemsSource="{Binding StarDaysYear}"/>
+                </PivotItem>
                 <PivotItem Header="年度爱情运势"/>
             </Pivot>
 
@@ -202,7 +208,4 @@
             <TextBlock HorizontalAlignment="Center">正在加载数据</TextBlock>
         </StackPanel>
     </Grid>
-
-
-
 </Page>

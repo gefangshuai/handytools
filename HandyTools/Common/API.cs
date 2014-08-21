@@ -16,6 +16,9 @@ namespace HandyTools.Common
         public static string StarDay = "http://api.uihoo.com/astro/astro.http.php?fun=day&id={0}&format=json";
         public static string StarTomorrow = "http://api.uihoo.com/astro/astro.http.php?fun=tomorrow&id={0}&format=json";
         public static string StarWeek = "http://api.uihoo.com/astro/astro.http.php?fun=week&id={0}&format=json";
+        public static string StarMonth = "http://api.uihoo.com/astro/astro.http.php?fun=month&id={0}&format=json";
+        public static string StarYear = "http://api.uihoo.com/astro/astro.http.php?fun=year&id={0}&format=json";
+        
         public static string LocalTime = "http://gb.weather.gov.hk/cgi-bin/hko/localtime.pl";
     }
 }

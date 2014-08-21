@@ -39,19 +39,25 @@ namespace HandyTools.Tuili
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         public ObservableCollection<StarDay> StarDays { get; set; }
         public ObservableCollection<StarDay> StarDaysTomorrow { get; set; }
-        public ObservableCollection<StarWeek> StarDaysWeek { get; set; } 
+        public ObservableCollection<StarWeek> StarDaysWeek { get; set; }
+        public ObservableCollection<StarDay> StarDaysMonth { get; set; }
+        public ObservableCollection<StarDay> StarDaysYear { get; set; } 
 
         public StarPage()
         {
             StarDays = new ObservableCollection<StarDay>();
             StarDaysTomorrow = new ObservableCollection<StarDay>();
             StarDaysWeek = new ObservableCollection<StarWeek>();
+            StarDaysMonth = new ObservableCollection<StarDay>();
+            StarDaysYear = new ObservableCollection<StarDay>();
 
             this.InitializeComponent();
 
             StarDayListView.DataContext = this;
             StarTomorrowListView.DataContext = this;
             StarWeekListView.DataContext = this;
+            StarMonthListView.DataContext = this;
+            StarYearListView.DataContext = this;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -178,6 +184,12 @@ namespace HandyTools.Tuili
                 case 2:
                     await LoadStarWeek(star);
                     break;
+                case 3:
+                    await LoadStarMonth(star);
+                    break;
+                case 4:
+                    await LoadStarYear(star);
+                    break;
             }
             ProgressPanel.Visibility = Visibility.Collapsed;
         }
@@ -243,6 +255,30 @@ namespace HandyTools.Tuili
             }
         }
 
+        private async Task LoadStarMonth(Star star)
+        {
+            try
+            {
+                StarDaysMonth.Clear();
+                await LoadStarMonthFromJson(star);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+        private async Task LoadStarYear(Star star)
+        {
+            try
+            {
+                StarDaysYear.Clear();
+                await LoadStarYearFromJson(star);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
 
         private async Task LoadStarDayFromJson(Star star)
         {
@@ -311,6 +347,52 @@ namespace HandyTools.Tuili
                 
         }
 
+        private async Task LoadStarMonthFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarMonth, star.Id));
+            if (json != null)
+            {
+                JsonArray array = JsonArray.Parse(json);
+                foreach (var item in array)
+                {
+                    StarDay starDay = new StarDay();
+                    if (item.ValueType == JsonValueType.Object)
+                    {
+                        if (item.GetObject().ContainsKey("title"))
+                            starDay.Title = item.GetObject()["title"].GetString();
+                        if (item.GetObject().ContainsKey("rank"))
+                            starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
+                        if (item.GetObject().ContainsKey("value"))
+                            starDay.Value = item.GetObject()["value"].GetString();
+                    }
+                    StarDaysMonth.Add(starDay);
+                }
+            }
+
+        }
+        private async Task LoadStarYearFromJson(Star star)
+        {
+            string json = await HttpClientHelper.GetWithUtf8(string.Format(API.StarYear, star.Id));
+            if (json != null)
+            {
+                JsonArray array = JsonArray.Parse(json);
+                foreach (var item in array)
+                {
+                    StarDay starDay = new StarDay();
+                    if (item.ValueType == JsonValueType.Object)
+                    {
+                        if (item.GetObject().ContainsKey("title"))
+                            starDay.Title = item.GetObject()["title"].GetString();
+                        if (item.GetObject().ContainsKey("rank"))
+                            starDay.Rank = (int)item.GetObject()["rank"].GetNumber();
+                        if (item.GetObject().ContainsKey("value"))
+                            starDay.Value = item.GetObject()["value"].GetString();
+                    }
+                    StarDaysYear.Add(starDay);
+                }
+            }
+
+        }
 
         private  void LoadDayAndTomorrowFromJson(Star star, string json, ObservableCollection<StarDay> starDays, bool today)
         {
