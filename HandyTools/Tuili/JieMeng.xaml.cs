@@ -164,7 +164,11 @@ namespace HandyTools.Tuili
 
         private void ItemListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
-
+            var item = e.ClickedItem as Item;
+            if (item != null)
+            {
+                Frame.Navigate(typeof(JieMengItemView), item);
+            }
         }
 
         private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)

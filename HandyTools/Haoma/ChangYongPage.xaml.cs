@@ -190,7 +190,7 @@ namespace HandyTools.Haoma
 
         private async void BaoAppBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var mailUri = new Uri("mailto:gefangshuai@live.com?subject=关于《全国公共服务号码》的反馈");
+            var mailUri = new Uri("mailto:lifedever@gmail.com?subject=关于《全国公共服务号码》的反馈");
             await Launcher.LaunchUriAsync(mailUri);
         }
 
