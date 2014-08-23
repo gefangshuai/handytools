@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="HandyTools.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HandyTools"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="15,0">
+            <TextBlock Text="关于" Foreground="#446BEB" Style="{ThemeResource TitleTextBlockStyle}"/>
+        </StackPanel>
+
+        <!--TODO: 应将内容放入以下网格-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Margin="0">
+                <Ellipse Width="120" Height="120" Stroke="#446BEB" StrokeThickness="3"/>
+                <TextBlock HorizontalAlignment="Center" Foreground="#446BEB" FontSize="75" VerticalAlignment="Center" FontWeight="ExtraLight">HT</TextBlock>
+            </Grid>
+            <Border Grid.Row="1" BorderThickness="0 2 0 0" BorderBrush="DodgerBlue"></Border>
+            <StackPanel HorizontalAlignment="Center" Grid.Row="2" Margin="0 50 0 0">
+                <TextBlock Foreground="#446BEB" Style="{StaticResource BaseTextBlockStyle}" Name="WeiboBlock" Tapped="WeiboBlock_OnTapped">微博: @LifeDever</TextBlock>
+                <TextBlock Foreground="#446BEB" Style="{StaticResource BaseTextBlockStyle}" Name="BlogBlock" Tapped="BlogBlock_OnTapped">博客: http://wincn.net</TextBlock>
+            </StackPanel>
+            <Grid Grid.Row="3" VerticalAlignment="Bottom">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button HorizontalAlignment="Stretch" Name="FankuiButton" Click="FankuiButton_OnClick" Foreground="#446BEB" VerticalAlignment="Bottom" BorderBrush="#446BEB">给我反馈</Button>
+                <Button Grid.Row="1" Foreground="#446BEB" Name="HaopingButton" Click="HaopingButton_OnClick" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderBrush="#446BEB">五星好评</Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

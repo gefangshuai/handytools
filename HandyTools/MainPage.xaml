@@ -56,8 +56,13 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="固定到开始" Icon="Pin" Name="PinAppBarButton" Click="PinAppBarButton_OnClick"></AppBarButton>
-            <AppBarButton Label="狂点我" Icon="TouchPointer" Click="ButtonBase_OnClick"/>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="固定到开始" Icon="Pin" Name="PinAppBarButton" Click="PinAppBarButton_OnClick"></AppBarButton>
+                <AppBarButton Label="狂点我" Icon="TouchPointer" Click="ButtonBase_OnClick"/>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="关于" Name="AboutAppBarButton" Click="AboutAppBarButton_OnClick"></AppBarButton>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

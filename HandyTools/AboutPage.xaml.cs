@@ -1,9 +1,5 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Store;
+﻿using Windows.ApplicationModel.Store;
 using Windows.System;
-using Windows.UI;
-using Windows.UI.StartScreen;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -23,31 +19,24 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // “基本页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
-using HandyTools.Data;
-using HandyTools.Haoma;
 
 namespace HandyTools
 {
     /// <summary>
     /// 可独立使用或用于导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class AboutPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        public const string appbarTileId = "handytoolsTile";
 
-        public MainPage()
+        public AboutPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
-            NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            StatusBar.GetForCurrentView().ForegroundColor = Colors.Black;
-            App.MainPage = this;
-            SqliteHelper.InitDb();
         }
 
         /// <summary>
@@ -121,46 +110,25 @@ namespace HandyTools
 
         #endregion
 
+        private async void FankuiButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var mailUri = new Uri("mailto:lifedever@gmail.com?subject=关于《HandyTools》的反馈");
+            await Launcher.LaunchUriAsync(mailUri);
+        }
 
-        private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private async void HaopingButton_OnClick(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("ms-windows-store:reviewapp?appid=" + CurrentApp.AppId));
         }
 
-        private async void PinAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void WeiboBlock_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-
-            if (!SecondaryTile.Exists(MainPage.appbarTileId))
-           
-            {
-                // Pin
-                Uri square150x150Logo = new Uri("ms-appx:///Assets/Logo.scale-240.png");
-                string tileActivationArguments = MainPage.appbarTileId + " was pinned at = " +
-                                                 DateTime.Now.ToLocalTime().ToString();
-                string displayName = "HandyTools";
-
-                TileSize newTileDesiredSize = TileSize.Square150x150;
-
-                SecondaryTile secondaryTile = new SecondaryTile(MainPage.appbarTileId,
-                    displayName,
-                    tileActivationArguments,
-                    square150x150Logo,
-                    newTileDesiredSize);
-
-                secondaryTile.VisualElements.Square30x30Logo = new Uri("ms-appx:///images/square30x30Tile-sdk.png");
-                secondaryTile.VisualElements.ShowNameOnSquare150x150Logo = true;
-                secondaryTile.VisualElements.ForegroundText = ForegroundText.Dark;
-                secondaryTile.RoamingEnabled = false;
-
-                await secondaryTile.RequestCreateAsync();
-            }
+            await Launcher.LaunchUriAsync(new Uri("http://weibo.com/gefangshuai", UriKind.Absolute));
         }
 
-        
-       
-        private void AboutAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        private async void BlogBlock_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            Frame.Navigate(typeof (AboutPage));
+            await Launcher.LaunchUriAsync(new Uri("http://wincn.net", UriKind.Absolute));
         }
     }
 }
