@@ -56,7 +56,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="设置" Icon="Setting"></AppBarButton>
+            <AppBarButton Label="固定到开始" Icon="Pin" Name="PinAppBarButton" Click="PinAppBarButton_OnClick"></AppBarButton>
             <AppBarButton Label="狂点我" Icon="TouchPointer" Click="ButtonBase_OnClick"/>
         </CommandBar>
     </Page.BottomAppBar>

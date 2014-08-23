@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Store;
 using Windows.System;
 using Windows.UI;
+using Windows.UI.StartScreen;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace HandyTools
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        public const string appbarTileId = "handytoolsTile";
 
         public MainPage()
         {
@@ -110,6 +112,7 @@ namespace HandyTools
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            Init();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -123,6 +126,58 @@ namespace HandyTools
         private async void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("ms-windows-store:reviewapp?appid=" + CurrentApp.AppId));
+        }
+
+        private async void PinAppBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            if (!SecondaryTile.Exists(MainPage.appbarTileId))
+           
+            {
+                // Pin
+                Uri square150x150Logo = new Uri("ms-appx:///Assets/Logo.scale-240.png");
+                string tileActivationArguments = MainPage.appbarTileId + " was pinned at = " +
+                                                 DateTime.Now.ToLocalTime().ToString();
+                string displayName = "HandyTools";
+
+                TileSize newTileDesiredSize = TileSize.Square150x150;
+
+                SecondaryTile secondaryTile = new SecondaryTile(MainPage.appbarTileId,
+                    displayName,
+                    tileActivationArguments,
+                    square150x150Logo,
+                    newTileDesiredSize);
+
+                secondaryTile.VisualElements.Square30x30Logo = new Uri("ms-appx:///images/square30x30Tile-sdk.png");
+                secondaryTile.VisualElements.ShowNameOnSquare150x150Logo = true;
+                secondaryTile.VisualElements.ForegroundText = ForegroundText.Dark;
+                secondaryTile.RoamingEnabled = false;
+
+                await secondaryTile.RequestCreateAsync();
+                
+            }
+            Init();
+
+        }
+
+        private void ToggleAppBarButton(bool showPinButton)
+        {
+            if (showPinButton)
+            {
+                this.PinAppBarButton.Label = "固定到开始";
+                this.PinAppBarButton.Icon = new SymbolIcon(Symbol.Pin);
+            }
+            else
+            {
+                this.PinAppBarButton.Label = "取消固定";
+                this.PinAppBarButton.Icon = new SymbolIcon(Symbol.UnPin);
+            }
+
+            this.PinAppBarButton.UpdateLayout();
+        }
+        void Init()
+        {
+            ToggleAppBarButton(!SecondaryTile.Exists(MainPage.appbarTileId));
         }
     }
 }
