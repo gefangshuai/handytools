@@ -130,5 +130,7 @@ namespace HandyTools
         {
             await Launcher.LaunchUriAsync(new Uri("http://wincn.net", UriKind.Absolute));
         }
+
+
     }
 }
