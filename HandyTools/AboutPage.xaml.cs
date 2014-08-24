@@ -1,5 +1,7 @@
-﻿using Windows.ApplicationModel.Store;
+﻿using System.Diagnostics;
+using Windows.ApplicationModel.Store;
 using Windows.System;
+using Windows.UI.Popups;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -132,8 +134,19 @@ namespace HandyTools
         }
 
 
-        private void JieSuoButton_OnClick(object sender, RoutedEventArgs e)
+        private async void JieSuoButton_OnClick(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                await CurrentAppSimulator.RequestAppPurchaseAsync(true);
+                MessageDialog dialog = new MessageDialog("已解锁全部功能，请尽情使用吧！", "恭喜");
+                await dialog.ShowAsync();
+            }
+            catch (Exception)
+            {
+                MessageDialog dialog = new MessageDialog("购买失败!", "提示");
+                dialog.ShowAsync();
+            }
         }
     }
 }
