@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Windows.ApplicationModel.Store;
 using Windows.Storage;
 using Windows.UI.Popups;
 using HandyTools.Common;
@@ -102,9 +103,15 @@ namespace HandyTools.Shenfen
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            if (CurrentApp.LicenseInformation.IsTrial)
+            {
+                MessageDialog dialog = new MessageDialog("试用版暂不开放此功能，请购买完整版，谢谢支持！", "提示");
+                await dialog.ShowAsync();
+                navigationHelper.GoBack();
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Windows.Graphics.Imaging;
+﻿using Windows.ApplicationModel.Store;
+using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
@@ -101,14 +102,24 @@ namespace HandyTools.Tuili
         /// </summary>
         /// <param name="e">提供导航方法数据和
         /// 无法取消导航请求的事件处理程序。</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            var code = e.Parameter as string;
-            if (!string.IsNullOrWhiteSpace(code))
+
+            if (CurrentApp.LicenseInformation.IsTrial)
             {
-                AutoSuggestBox.Text = code;
-                SearchJiXiong();
+                MessageDialog dialog = new MessageDialog("试用版暂不开放此功能，请购买完整版，谢谢支持！", "提示");
+                await dialog.ShowAsync();
+                navigationHelper.GoBack();
+            }
+            else
+            {
+                var code = e.Parameter as string;
+                if (!string.IsNullOrWhiteSpace(code))
+                {
+                    AutoSuggestBox.Text = code;
+                    SearchJiXiong();
+                }
             }
         }
 

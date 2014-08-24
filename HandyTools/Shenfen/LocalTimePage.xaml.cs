@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Store;
 using Windows.Data.Xml.Dom;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Notifications;
+using Windows.UI.Popups;
 using HandyTools.Common;
 using System;
 using System.Collections.Generic;
@@ -56,11 +58,7 @@ namespace HandyTools.Shenfen
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                LoadLocalTime();
-                LoadNetTime();
-            });
+            
         }
 
         /// <summary>
@@ -125,7 +123,20 @@ namespace HandyTools.Shenfen
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            
+            if (CurrentApp.LicenseInformation.IsTrial)
+            {
+                MessageDialog dialog = new MessageDialog("试用版暂不开放此功能，请购买完整版，谢谢支持！", "提示");
+                await dialog.ShowAsync();
+                navigationHelper.GoBack();
+            }
+            else
+            {
+                this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    LoadLocalTime();
+                    LoadNetTime();
+                });
+            }
             
         }
 

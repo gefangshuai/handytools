@@ -49,6 +49,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Button Grid.Row="0" HorizontalAlignment="Stretch" Name="JieSuoButton" Click="JieSuoButton_OnClick" Foreground="#446BEB" VerticalAlignment="Bottom" BorderBrush="#446BEB">解锁全部功能</Button>
                 <Button Grid.Row="1" HorizontalAlignment="Stretch" Name="FankuiButton" Click="FankuiButton_OnClick" Foreground="#446BEB" VerticalAlignment="Bottom" BorderBrush="#446BEB">给我反馈</Button>
                 <Button Grid.Row="2" Foreground="#446BEB" Name="HaopingButton" Click="HaopingButton_OnClick" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" BorderBrush="#446BEB">五星好评</Button>
             </Grid>

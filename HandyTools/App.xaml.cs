@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -27,6 +28,7 @@ namespace HandyTools
     {
         private TransitionCollection transitions;
         public static Page MainPage;
+
 
         /// <summary>
         /// 初始化单一实例应用程序对象。    这是执行的创作代码的第一行，

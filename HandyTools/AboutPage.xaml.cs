@@ -132,5 +132,8 @@ namespace HandyTools
         }
 
 
+        private void JieSuoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
