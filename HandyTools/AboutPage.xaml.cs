@@ -138,7 +138,7 @@ namespace HandyTools
         {
             try
             {
-                await CurrentAppSimulator.RequestAppPurchaseAsync(true);
+                await CurrentApp.RequestAppPurchaseAsync(true);
                 MessageDialog dialog = new MessageDialog("已解锁全部功能，请尽情使用吧！", "恭喜");
                 await dialog.ShowAsync();
             }
