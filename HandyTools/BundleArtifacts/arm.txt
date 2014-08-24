@@ -1,4 +1,4 @@
-MainPackage=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.1_Bundle\HandyTools_1.1.0.1_ARM.appx
-SymbolPackage=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\AppPackages\HandyTools_1.1.0.1_Test\HandyTools_1.1.0.1_ARM.appxsym
-ResourcePack=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.1_Bundle\HandyTools_1.1.0.1_scale-100.appx
-ResourcePack=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.1_Bundle\HandyTools_1.1.0.1_scale-140.appx
+MainPackage=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.2_Bundle\HandyTools_1.1.0.2_ARM.appx
+SymbolPackage=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\AppPackages\HandyTools_1.1.0.2_Test\HandyTools_1.1.0.2_ARM.appxsym
+ResourcePack=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.2_Bundle\HandyTools_1.1.0.2_scale-100.appx
+ResourcePack=f:\documents\visual studio 2013\Projects\product\HandyTools\HandyTools\bin\ARM\Release\HandyTools_1.1.0.2_Bundle\HandyTools_1.1.0.2_scale-140.appx

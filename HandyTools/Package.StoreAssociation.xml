@@ -194,5 +194,23 @@
     <MainPackageIdentityName>38578LifeDever.wp8</MainPackageIdentityName>
     <MainPackageIdentityName>38578LifeDever.4694864193AE2</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://dev.windowsphone.com/AppSubmission/AssociationLanding?windowsProductId=42aa919e-b1dc-472a-9107-e002573568f4" />
+  <PackageInfoList LandingUrl="https://dev.windowsphone.com/AppSubmission/AssociationLanding?windowsProductId=42aa919e-b1dc-472a-9107-e002573568f4">
+    <BundleInfo>
+      <PackageInfo>
+        <OsMinVersion>6.3.0.0</OsMinVersion>
+        <PackageArchitecture></PackageArchitecture>
+        <PackageMaxArchitectureVersion>1.1.0.1</PackageMaxArchitectureVersion>
+      </PackageInfo>
+      <PackageInfo>
+        <OsMinVersion>6.3.0.0</OsMinVersion>
+        <PackageArchitecture>arm</PackageArchitecture>
+        <PackageMaxArchitectureVersion>1.1.0.1</PackageMaxArchitectureVersion>
+      </PackageInfo>
+      <PackageInfo>
+        <OsMinVersion>6.3.0.0</OsMinVersion>
+        <PackageArchitecture></PackageArchitecture>
+        <PackageMaxArchitectureVersion>1.1.0.1</PackageMaxArchitectureVersion>
+      </PackageInfo>
+    </BundleInfo>
+  </PackageInfoList>
 </StoreAssociation>
