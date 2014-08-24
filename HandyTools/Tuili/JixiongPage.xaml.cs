@@ -106,7 +106,7 @@ namespace HandyTools.Tuili
         {
             this.navigationHelper.OnNavigatedTo(e);
 
-            if (CurrentAppSimulator.LicenseInformation.IsTrial)
+            if (CurrentApp.LicenseInformation.IsTrial)
             {
                 MessageDialog dialog = new MessageDialog("试用版暂不开放此功能，请购买完整版，谢谢支持！", "提示");
                 await dialog.ShowAsync();
